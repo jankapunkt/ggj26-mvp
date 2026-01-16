@@ -54,12 +54,18 @@ var game_over = false
 var fall_timer = 0.0
 var fall_speed = 1.0  # Seconds between automatic falls
 
+# UI reference
+var ui_controller = null
+
 ## Called when the node enters the scene tree for the first time.
 ## Initializes the game board and spawns the first piece.
 ## Reference: https://docs.godotengine.org/en/stable/classes/class_node.html#class-node-method-ready
 func _ready():
+	# Get reference to UI controller
+	ui_controller = get_node("../UI")
 	initialize_board()
 	spawn_piece()
+	update_ui()
 
 ## Initializes the game board as a 2D array filled with null values.
 ## The board represents the play area where pieces accumulate.
@@ -87,6 +93,8 @@ func spawn_piece():
 	if not is_valid_position(piece_x, piece_y, current_shape):
 		game_over = true
 		print("Game Over! Final Score: ", score)
+		if ui_controller:
+			ui_controller.show_game_over()
 
 ## Called every frame. Delta is the elapsed time since the previous frame.
 ## Handles automatic piece falling and input processing.
@@ -248,6 +256,7 @@ func clear_lines():
 	if lines_cleared > 0:
 		score += [0, 40, 100, 300, 1200][lines_cleared]
 		print("Lines cleared: ", lines_cleared, " | Score: ", score)
+		update_ui()
 
 ## Custom drawing function to render the game board and current piece.
 ## Reference: https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-rect
@@ -299,3 +308,11 @@ func reset_game():
 	game_over = false
 	fall_timer = 0.0
 	spawn_piece()
+	update_ui()
+	if ui_controller:
+		ui_controller.hide_game_over()
+
+## Updates the UI with current game state.
+func update_ui():
+	if ui_controller:
+		ui_controller.update_score(score)
