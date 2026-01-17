@@ -52,7 +52,10 @@ var game_over = false
 
 # Timing variables
 var fall_timer = 0.0
-var fall_speed = 1.0  # Seconds between automatic falls
+var default_fall_speed = 1.0  # Default falling speed
+var slow_motion_speed = 2.5  # Slower falling speed when slow motion is active
+var fall_speed = default_fall_speed  # Current falling speed (seconds between automatic falls)
+var is_slow_motion_active = false  # Track slow motion state
 
 # UI reference
 var ui_controller = null
@@ -102,6 +105,12 @@ func spawn_piece():
 func _process(delta):
 	if game_over:
 		return
+	
+	# Check if slow motion state changed
+	var slow_motion_pressed = Input.is_action_pressed("slow_motion")
+	if slow_motion_pressed != is_slow_motion_active:
+		is_slow_motion_active = slow_motion_pressed
+		fall_speed = slow_motion_speed if is_slow_motion_active else default_fall_speed
 	
 	# Automatic falling
 	fall_timer += delta

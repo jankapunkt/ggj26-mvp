@@ -32,6 +32,7 @@ Building a throw-away prototype for GGJ26 - A minimal Tetris clone for learning 
 - **→ / D**: Move piece right
 - **↓ / S**: Move piece down faster (soft drop)
 - **↑ / W / Space**: Rotate piece clockwise
+- **Shift**: Slow down falling speed (hold to activate)
 - **Enter**: Hard drop (instant drop to bottom)
 - **Enter** (when game over): Restart game
 
