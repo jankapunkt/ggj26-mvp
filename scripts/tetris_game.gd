@@ -17,6 +17,14 @@ const BOARD_WIDTH = 10
 const BOARD_HEIGHT = 20
 const CELL_SIZE = 30
 
+# sounds
+@onready var sfx_points: AudioStreamPlayer = $"../sfx_points"
+@onready var sfx_game_over: AudioStreamPlayer = $"../sfx_game-over"
+@onready var sfx_rotate: AudioStreamPlayer = $"../sfx_rotate"
+@onready var sfx_landing: AudioStreamPlayer = $"../sfx_landing"
+@onready var background: AudioStreamPlayer = $"../background_music"
+
+
 # Tetromino shapes defined as 2D arrays
 # Each shape is a 4x4 grid where 1 represents a filled cell
 const SHAPES = {
@@ -69,6 +77,7 @@ func _ready():
 	initialize_board()
 	spawn_piece()
 	update_ui()
+	background.play()
 
 ## Initializes the game board as a 2D array filled with null values.
 ## The board represents the play area where pieces accumulate.
@@ -96,6 +105,7 @@ func spawn_piece():
 	if not is_valid_position(piece_x, piece_y, current_shape):
 		game_over = true
 		print("Game Over! Final Score: ", score)
+		sfx_game_over.play()
 		if ui_controller:
 			ui_controller.show_game_over()
 
@@ -120,6 +130,10 @@ func _process(delta):
 	
 	# Force redraw to update visuals
 	queue_redraw()
+
+func toggle_pause():
+	var tree = get_tree()
+	tree.paused = !tree.paused
 
 ## Handles player input for moving and rotating pieces.
 ## Uses Input.is_action_just_pressed() to detect single key presses.
@@ -168,6 +182,8 @@ func hard_drop():
 	lock_piece()
 	clear_lines()
 	spawn_piece()
+	sfx_landing.play()
+	
 
 ## Rotates the current piece 90 degrees clockwise.
 ## Uses wall kick logic if the rotation would collide.
@@ -202,6 +218,7 @@ func rotate_shape(shape: Array) -> Array:
 		for x in range(size):
 			rotated[x][size - 1 - y] = shape[y][x]
 	
+	sfx_rotate.play()
 	return rotated
 
 ## Checks if a piece at the given position with the given shape is valid.
@@ -266,6 +283,7 @@ func clear_lines():
 		score += [0, 40, 100, 300, 1200][lines_cleared]
 		print("Lines cleared: ", lines_cleared, " | Score: ", score)
 		update_ui()
+		sfx_points.play()
 
 ## Custom drawing function to render the game board and current piece.
 ## Reference: https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-rect

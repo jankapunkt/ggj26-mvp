@@ -1,17 +1,28 @@
-[gd_scene load_steps=3 format=3 uid="uid://cr7yjlywgjqbs"]
+[gd_scene load_steps=9 format=3 uid="uid://cr7yjlywgjqbs"]
 
 [ext_resource type="Script" path="res://scripts/tetris_game.gd" id="1_kn8dx"]
+[ext_resource type="Script" path="res://scenes/main.gd" id="1_thwcc"]
 [ext_resource type="Script" path="res://scripts/ui_controller.gd" id="2_t2s5h"]
+[ext_resource type="AudioStream" uid="uid://mm3bue3lcuwc" path="res://sounds/line-cleared.mp3" id="3_a111i"]
+[ext_resource type="AudioStream" uid="uid://dyilhdjll64g" path="res://sounds/game-over-arcade.mp3" id="4_h8axc"]
+[ext_resource type="AudioStream" uid="uid://bpq75o2opeswi" path="res://sounds/click.mp3" id="5_nc34l"]
+[ext_resource type="AudioStream" uid="uid://bc3ohvl2my2iw" path="res://sounds/bing.mp3" id="6_iujib"]
+[ext_resource type="AudioStream" uid="uid://dq3kejawvxn25" path="res://sounds/8-bit-melody-loop.mp3" id="7_hncjb"]
 
 [node name="Main" type="Node2D"]
+process_mode = 3
+script = ExtResource("1_thwcc")
 
-[node name="TetrisGame" type="Node2D" parent="."]
+[node name="Pausable" type="Node2D" parent="."]
+process_mode = 1
+
+[node name="TetrisGame" type="Node2D" parent="Pausable"]
 script = ExtResource("1_kn8dx")
 
-[node name="UI" type="CanvasLayer" parent="."]
+[node name="UI" type="CanvasLayer" parent="Pausable"]
 script = ExtResource("2_t2s5h")
 
-[node name="ScoreLabel" type="Label" parent="UI"]
+[node name="ScoreLabel" type="Label" parent="Pausable/UI"]
 offset_left = 320.0
 offset_top = 20.0
 offset_right = 460.0
@@ -19,8 +30,9 @@ offset_bottom = 46.0
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 20
 text = "Score: 0"
+metadata/_edit_use_anchors_ = true
 
-[node name="GameOverLabel" type="Label" parent="UI"]
+[node name="GameOverLabel" type="Label" parent="Pausable/UI"]
 offset_left = 60.0
 offset_top = 300.0
 offset_right = 300.0
@@ -31,12 +43,18 @@ text = "GAME OVER
 Press Enter to Restart"
 horizontal_alignment = 1
 vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
 
-[node name="InstructionsLabel" type="Label" parent="UI"]
-offset_left = 20.0
-offset_top = 20.0
-offset_right = 300.0
-offset_bottom = 150.0
+[node name="InstructionsLabel" type="Label" parent="Pausable/UI"]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -280.0
+offset_top = -158.0
+grow_horizontal = 0
+grow_vertical = 0
 theme_override_colors/font_color = Color(0.8, 0.8, 0.8, 1)
 theme_override_font_sizes/font_size = 14
 text = "Controls:
@@ -44,4 +62,37 @@ text = "Controls:
 → / D: Move Right
 ↓ / S: Move Down
 ↑ / W / Space: Rotate
-Enter: Hard Drop"
+Shift (hold): Slow down falling speed
+Enter: Hard Drop
+Escape: Pause Game"
+metadata/_edit_use_anchors_ = true
+
+[node name="PausedLabel" type="Label" parent="Pausable/UI"]
+offset_left = 60.0
+offset_top = 300.0
+offset_right = 300.0
+offset_bottom = 380.0
+theme_override_colors/font_color = Color(1, 0, 0, 1)
+theme_override_font_sizes/font_size = 32
+text = "PAUSED
+Press Escape to continue"
+horizontal_alignment = 1
+vertical_alignment = 1
+metadata/_edit_use_anchors_ = true
+
+[node name="sfx_points" type="AudioStreamPlayer" parent="Pausable"]
+stream = ExtResource("3_a111i")
+
+[node name="sfx_game-over" type="AudioStreamPlayer" parent="Pausable"]
+stream = ExtResource("4_h8axc")
+
+[node name="sfx_rotate" type="AudioStreamPlayer" parent="Pausable"]
+stream = ExtResource("5_nc34l")
+
+[node name="sfx_landing" type="AudioStreamPlayer" parent="Pausable"]
+stream = ExtResource("6_iujib")
+
+[node name="background_music" type="AudioStreamPlayer" parent="Pausable"]
+stream = ExtResource("7_hncjb")
+volume_db = -10.0
+autoplay = true
