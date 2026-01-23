@@ -79,6 +79,7 @@ func _ready():
 	update_ui()
 	background.volume_linear = 0.25
 	background.play()
+	sfx_landing.volume_linear = 0.5
 
 ## Initializes the game board as a 2D array filled with null values.
 ## The board represents the play area where pieces accumulate.
@@ -173,17 +174,18 @@ func move_piece(dx: int, dy: int) -> bool:
 func move_down():
 	if not move_piece(0, 1):
 		lock_piece()
-		clear_lines()
+		var lines_cleared = clear_lines()
 		spawn_piece()
+		play_landing_sound(lines_cleared)
 
 ## Instantly drops the current piece to the lowest valid position.
 func hard_drop():
 	while move_piece(0, 1):
 		pass
 	lock_piece()
-	clear_lines()
+	var lines_cleared = clear_lines()
 	spawn_piece()
-	sfx_landing.play()
+	play_landing_sound(lines_cleared)
 	
 
 ## Rotates the current piece 90 degrees clockwise.
@@ -257,9 +259,18 @@ func lock_piece():
 				if board_y >= 0 and board_y < BOARD_HEIGHT:
 					board[board_y][board_x] = current_color
 
+## Plays appropriate sound effect based on whether lines were cleared.
+## If lines were cleared (score achieved), plays points sound, otherwise plays landing sound.
+func play_landing_sound(lines_cleared: int):
+	if lines_cleared > 0:
+		sfx_points.play()
+	else:
+		sfx_landing.play()
+
 ## Checks for complete lines and clears them, updating the score.
 ## Complete lines are removed and upper rows fall down.
-func clear_lines():
+## Returns the number of lines cleared.
+func clear_lines() -> int:
 	var lines_cleared = 0
 	
 	for y in range(BOARD_HEIGHT - 1, -1, -1):
@@ -283,9 +294,9 @@ func clear_lines():
 	if lines_cleared > 0:
 		score += [0, 40, 100, 300, 1200][lines_cleared]
 		print("Lines cleared: ", lines_cleared, " | Score: ", score)
-		update_ui()		
-		# play point sound instead
-		sfx_points.play()
+		update_ui()
+	
+	return lines_cleared
 
 ## Custom drawing function to render the game board and current piece.
 ## Reference: https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-rect

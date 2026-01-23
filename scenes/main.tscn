@@ -3,11 +3,11 @@
 [ext_resource type="Script" uid="uid://devp8my1yt5m" path="res://scripts/tetris_game.gd" id="1_kn8dx"]
 [ext_resource type="Script" uid="uid://2no7m0dthgj6" path="res://scenes/main.gd" id="1_thwcc"]
 [ext_resource type="Script" uid="uid://bvga4auyp6qaq" path="res://scripts/ui_controller.gd" id="2_t2s5h"]
-[ext_resource type="AudioStream" uid="uid://mm3bue3lcuwc" path="res://sounds/line-cleared.mp3" id="3_a111i"]
 [ext_resource type="AudioStream" uid="uid://dyilhdjll64g" path="res://sounds/game-over-arcade.mp3" id="4_h8axc"]
+[ext_resource type="AudioStream" uid="uid://bfgvu4eai1qg2" path="res://sounds/classic-game-action-positive-5-224402.mp3" id="4_tipki"]
 [ext_resource type="AudioStream" uid="uid://bpq75o2opeswi" path="res://sounds/click.mp3" id="5_nc34l"]
-[ext_resource type="AudioStream" uid="uid://bc3ohvl2my2iw" path="res://sounds/bing.mp3" id="6_iujib"]
 [ext_resource type="AudioStream" uid="uid://dq3kejawvxn25" path="res://sounds/8-bit-melody-loop.mp3" id="7_hncjb"]
+[ext_resource type="AudioStream" uid="uid://r3a6153m2oio" path="res://sounds/classic-game-action-positive-1-224407.mp3" id="7_tipki"]
 
 [node name="Main" type="Node2D"]
 process_mode = 3
@@ -81,7 +81,7 @@ vertical_alignment = 1
 metadata/_edit_use_anchors_ = true
 
 [node name="sfx_points" type="AudioStreamPlayer" parent="Pausable"]
-stream = ExtResource("3_a111i")
+stream = ExtResource("7_tipki")
 
 [node name="sfx_game-over" type="AudioStreamPlayer" parent="Pausable"]
 stream = ExtResource("4_h8axc")
@@ -90,7 +90,7 @@ stream = ExtResource("4_h8axc")
 stream = ExtResource("5_nc34l")
 
 [node name="sfx_landing" type="AudioStreamPlayer" parent="Pausable"]
-stream = ExtResource("6_iujib")
+stream = ExtResource("4_tipki")
 
 [node name="background_music" type="AudioStreamPlayer" parent="Pausable"]
 stream = ExtResource("7_hncjb")
