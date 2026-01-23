@@ -332,9 +332,12 @@ func _draw():
 	
 	# Draw current piece with rotation animation
 	if current_piece != null:
-		# Calculate the center of the piece for rotation
-		var piece_center_x = (piece_x + 2) * CELL_SIZE
-		var piece_center_y = (piece_y + 2) * CELL_SIZE
+		# Calculate the center of the 4x4 piece grid for rotation
+		# The center is at 1.5, 1.5 in the 4x4 grid (between cells 1 and 2)
+		var piece_center_grid_x = 1.5
+		var piece_center_grid_y = 1.5
+		var piece_center_x = (piece_x + piece_center_grid_x) * CELL_SIZE
+		var piece_center_y = (piece_y + piece_center_grid_y) * CELL_SIZE
 		
 		for sy in range(current_shape.size()):
 			for sx in range(current_shape[sy].size()):
@@ -343,8 +346,8 @@ func _draw():
 					var draw_y = piece_y + sy
 					if draw_y >= 0:
 						# Apply rotation transformation
-						var cell_center_x = draw_x * CELL_SIZE + CELL_SIZE / 2
-						var cell_center_y = draw_y * CELL_SIZE + CELL_SIZE / 2
+						var cell_center_x = (draw_x + 0.5) * CELL_SIZE
+						var cell_center_y = (draw_y + 0.5) * CELL_SIZE
 						
 						# Calculate rotated position relative to piece center
 						var offset_x = cell_center_x - piece_center_x
@@ -356,8 +359,8 @@ func _draw():
 						var rotated_x = offset_x * cos_angle - offset_y * sin_angle
 						var rotated_y = offset_x * sin_angle + offset_y * cos_angle
 						
-						var final_x = (piece_center_x + rotated_x - CELL_SIZE / 2) / CELL_SIZE
-						var final_y = (piece_center_y + rotated_y - CELL_SIZE / 2) / CELL_SIZE
+						var final_x = (piece_center_x + rotated_x) / CELL_SIZE - 0.5
+						var final_y = (piece_center_y + rotated_y) / CELL_SIZE - 0.5
 						
 						draw_cell(final_x, final_y, current_color)
 	
