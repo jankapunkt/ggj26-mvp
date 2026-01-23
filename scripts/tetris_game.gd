@@ -68,6 +68,9 @@ var is_slow_motion_active = false  # Track slow motion state
 # UI reference
 var ui_controller = null
 
+# Track if we should play points sound after landing sound
+var should_play_points_after_landing = false
+
 ## Called when the node enters the scene tree for the first time.
 ## Initializes the game board and spawns the first piece.
 ## Reference: https://docs.godotengine.org/en/stable/classes/class_node.html#class-node-method-ready
@@ -79,6 +82,8 @@ func _ready():
 	update_ui()
 	background.volume_linear = 0.25
 	background.play()
+	# Connect the finished signal from sfx_landing to play points sound after
+	sfx_landing.finished.connect(_on_landing_sound_finished)
 
 ## Initializes the game board as a 2D array filled with null values.
 ## The board represents the play area where pieces accumulate.
@@ -173,16 +178,21 @@ func move_piece(dx: int, dy: int) -> bool:
 func move_down():
 	if not move_piece(0, 1):
 		lock_piece()
-		clear_lines()
+		var lines = clear_lines()
 		spawn_piece()
+		# Play landing sound after locking
+		# If lines were cleared, points sound will play after landing sound finishes
+		sfx_landing.play()
 
 ## Instantly drops the current piece to the lowest valid position.
 func hard_drop():
 	while move_piece(0, 1):
 		pass
 	lock_piece()
-	clear_lines()
+	var lines = clear_lines()
 	spawn_piece()
+	# Play landing sound after locking
+	# If lines were cleared, points sound will play after landing sound finishes
 	sfx_landing.play()
 	
 
@@ -259,7 +269,8 @@ func lock_piece():
 
 ## Checks for complete lines and clears them, updating the score.
 ## Complete lines are removed and upper rows fall down.
-func clear_lines():
+## Returns the number of lines cleared.
+func clear_lines() -> int:
 	var lines_cleared = 0
 	
 	for y in range(BOARD_HEIGHT - 1, -1, -1):
@@ -284,8 +295,10 @@ func clear_lines():
 		score += [0, 40, 100, 300, 1200][lines_cleared]
 		print("Lines cleared: ", lines_cleared, " | Score: ", score)
 		update_ui()		
-		# play point sound instead
-		sfx_points.play()
+		# Don't play point sound immediately - it will play after landing sound
+		should_play_points_after_landing = true
+	
+	return lines_cleared
 
 ## Custom drawing function to render the game board and current piece.
 ## Reference: https://docs.godotengine.org/en/stable/classes/class_canvasitem.html#class-canvasitem-method-draw-rect
@@ -345,3 +358,9 @@ func reset_game():
 func update_ui():
 	if ui_controller:
 		ui_controller.update_score(score)
+
+## Callback function called when landing sound finishes playing
+func _on_landing_sound_finished():
+	if should_play_points_after_landing:
+		should_play_points_after_landing = false
+		sfx_points.play()
