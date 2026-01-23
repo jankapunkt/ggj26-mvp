@@ -233,11 +233,23 @@ func animate_rotation():
 		rotation_tween.kill()
 	
 	# Update target rotation (each rotation is 90 degrees = PI/2 radians)
-	target_rotation_angle += PI / 2.0
+	var new_target = target_rotation_angle + PI / 2.0
 	
 	# Normalize angle to prevent floating-point precision drift
 	# Keep angles within 0 to 2*PI range using wrapf
-	target_rotation_angle = wrapf(target_rotation_angle, 0.0, 2.0 * PI)
+	new_target = wrapf(new_target, 0.0, 2.0 * PI)
+	
+	# Check if we need to wrap around to take the shorter path
+	# If the difference is more than PI, we should animate the other direction
+	var angle_diff = new_target - visual_rotation_angle
+	if angle_diff > PI:
+		# Target is ahead but shorter to go backwards
+		visual_rotation_angle += 2.0 * PI
+	elif angle_diff < -PI:
+		# Target is behind but shorter to go forwards
+		new_target += 2.0 * PI
+	
+	target_rotation_angle = new_target
 	
 	# Create new tween for smooth rotation animation
 	rotation_tween = create_tween()
@@ -246,7 +258,13 @@ func animate_rotation():
 	rotation_tween.set_trans(Tween.TRANS_CUBIC)
 	
 	# When animation completes, normalize visual angle to prevent drift
-	rotation_tween.finished.connect(func(): visual_rotation_angle = wrapf(visual_rotation_angle, 0.0, 2.0 * PI))
+	# Use CONNECT_ONE_SHOT to avoid memory leaks
+	rotation_tween.finished.connect(
+		func(): 
+			visual_rotation_angle = wrapf(visual_rotation_angle, 0.0, 2.0 * PI)
+			target_rotation_angle = visual_rotation_angle,
+		CONNECT_ONE_SHOT
+	)
 
 ## Rotates a shape matrix 90 degrees clockwise.
 ## Returns the rotated shape as a new 2D array.
@@ -356,6 +374,10 @@ func _draw():
 		var piece_center_x = (piece_x + rotation_center.x) * CELL_SIZE
 		var piece_center_y = (piece_y + rotation_center.y) * CELL_SIZE
 		
+		# Cache trigonometric calculations (computed once per frame instead of per cell)
+		var cos_angle = cos(visual_rotation_angle)
+		var sin_angle = sin(visual_rotation_angle)
+		
 		for sy in range(current_shape.size()):
 			for sx in range(current_shape[sy].size()):
 				if current_shape[sy][sx] == 1:
@@ -369,9 +391,6 @@ func _draw():
 						# Calculate rotated position relative to piece center
 						var offset_x = cell_center_x - piece_center_x
 						var offset_y = cell_center_y - piece_center_y
-						
-						var cos_angle = cos(visual_rotation_angle)
-						var sin_angle = sin(visual_rotation_angle)
 						
 						var rotated_x = offset_x * cos_angle - offset_y * sin_angle
 						var rotated_y = offset_x * sin_angle + offset_y * cos_angle
