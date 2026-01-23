@@ -82,6 +82,7 @@ func _ready():
 	update_ui()
 	background.volume_linear = 0.25
 	background.play()
+	sfx_landing.volume_linear = 0.5
 	# Connect the finished signal from sfx_landing to play points sound after
 	sfx_landing.finished.connect(_on_landing_sound_finished)
 
