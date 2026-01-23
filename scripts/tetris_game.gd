@@ -236,16 +236,17 @@ func animate_rotation():
 	target_rotation_angle += PI / 2.0
 	
 	# Normalize angle to prevent floating-point precision drift
-	# Keep angles within 0 to 2*PI range
-	target_rotation_angle = fmod(target_rotation_angle, 2.0 * PI)
-	if target_rotation_angle < 0:
-		target_rotation_angle += 2.0 * PI
+	# Keep angles within 0 to 2*PI range using wrapf
+	target_rotation_angle = wrapf(target_rotation_angle, 0.0, 2.0 * PI)
 	
 	# Create new tween for smooth rotation animation
 	rotation_tween = create_tween()
 	rotation_tween.tween_property(self, "visual_rotation_angle", target_rotation_angle, 0.15)
 	rotation_tween.set_ease(Tween.EASE_OUT)
 	rotation_tween.set_trans(Tween.TRANS_CUBIC)
+	
+	# When animation completes, normalize visual angle to prevent drift
+	rotation_tween.finished.connect(func(): visual_rotation_angle = wrapf(visual_rotation_angle, 0.0, 2.0 * PI))
 
 ## Rotates a shape matrix 90 degrees clockwise.
 ## Returns the rotated shape as a new 2D array.
