@@ -48,6 +48,18 @@ const COLORS = {
 	"L": Color(1, 0.5, 0)     # Orange
 }
 
+# Rotation centers for each tetromino (in 4x4 grid coordinates)
+# Most pieces rotate around (1.5, 1.5), but some have different centers
+const ROTATION_CENTERS = {
+	"I": Vector2(1.5, 1.5),   # I-piece rotates around center
+	"O": Vector2(1.0, 1.0),   # O-piece center (though visually identical when rotated)
+	"T": Vector2(1.5, 1.5),   # T-piece center
+	"S": Vector2(1.5, 1.5),   # S-piece center
+	"Z": Vector2(1.5, 1.5),   # Z-piece center
+	"J": Vector2(1.5, 1.5),   # J-piece center
+	"L": Vector2(1.5, 1.5)    # L-piece center
+}
+
 # Game state variables
 var board = []
 var current_piece = null
@@ -57,6 +69,11 @@ var piece_x = 0
 var piece_y = 0
 var score = 0
 var game_over = false
+
+# Rotation animation variables
+var visual_rotation_angle = 0.0  # Current visual rotation angle (in radians)
+var target_rotation_angle = 0.0  # Target rotation angle after rotation
+var rotation_tween: Tween = null  # Tween for animating rotation
 
 # Timing variables
 var fall_timer = 0.0
@@ -102,6 +119,10 @@ func spawn_piece():
 	
 	piece_x = BOARD_WIDTH / 2 - 2
 	piece_y = 0
+	
+	# Reset rotation angles for new piece
+	visual_rotation_angle = 0.0
+	target_rotation_angle = 0.0
 	
 	if not is_valid_position(piece_x, piece_y, current_shape):
 		game_over = true
@@ -194,6 +215,7 @@ func rotate_piece():
 	# Try rotating in place
 	if is_valid_position(piece_x, piece_y, rotated):
 		current_shape = rotated
+		animate_rotation()
 		return
 	
 	# Try wall kicks (move left or right to fit rotation)
@@ -201,7 +223,49 @@ func rotate_piece():
 		if is_valid_position(piece_x + kick_x, piece_y, rotated):
 			piece_x += kick_x
 			current_shape = rotated
+			animate_rotation()
 			return
+
+## Animates the visual rotation of the current piece.
+## Creates a smooth transition from current angle to target angle.
+func animate_rotation():
+	# Cancel any existing rotation animation
+	if rotation_tween:
+		rotation_tween.kill()
+	
+	# Update target rotation (each rotation is 90 degrees = PI/2 radians)
+	var new_target = target_rotation_angle + PI / 2.0
+	
+	# Normalize angle to prevent floating-point precision drift
+	# Keep angles within 0 to 2*PI range using wrapf
+	new_target = wrapf(new_target, 0.0, 2.0 * PI)
+	
+	# Check if we need to wrap around to take the shorter path
+	# If the difference is more than PI, we should animate the other direction
+	var angle_diff = new_target - visual_rotation_angle
+	if angle_diff > PI:
+		# Target is ahead but shorter to go backwards
+		visual_rotation_angle += 2.0 * PI
+	elif angle_diff < -PI:
+		# Target is behind but shorter to go forwards
+		new_target += 2.0 * PI
+	
+	target_rotation_angle = new_target
+	
+	# Create new tween for smooth rotation animation
+	rotation_tween = create_tween()
+	rotation_tween.tween_property(self, "visual_rotation_angle", target_rotation_angle, 0.15)
+	rotation_tween.set_ease(Tween.EASE_OUT)
+	rotation_tween.set_trans(Tween.TRANS_CUBIC)
+	
+	# When animation completes, normalize visual angle to prevent drift
+	# Use CONNECT_ONE_SHOT to avoid memory leaks
+	rotation_tween.finished.connect(
+		func(): 
+			visual_rotation_angle = wrapf(visual_rotation_angle, 0.0, 2.0 * PI)
+			target_rotation_angle = visual_rotation_angle,
+		CONNECT_ONE_SHOT
+	)
 
 ## Rotates a shape matrix 90 degrees clockwise.
 ## Returns the rotated shape as a new 2D array.
@@ -305,15 +369,38 @@ func _draw():
 			if board[y][x] != null:
 				draw_cell(x, y, board[y][x])
 	
-	# Draw current piece
+	# Draw current piece with rotation animation
 	if current_piece != null:
+		# Get the rotation center for the current piece type
+		var rotation_center = ROTATION_CENTERS.get(current_piece, Vector2(1.5, 1.5))
+		var piece_center_x = (piece_x + rotation_center.x) * CELL_SIZE
+		var piece_center_y = (piece_y + rotation_center.y) * CELL_SIZE
+		
+		# Cache trigonometric calculations (computed once per frame instead of per cell)
+		var cos_angle = cos(visual_rotation_angle)
+		var sin_angle = sin(visual_rotation_angle)
+		
 		for sy in range(current_shape.size()):
 			for sx in range(current_shape[sy].size()):
 				if current_shape[sy][sx] == 1:
 					var draw_x = piece_x + sx
 					var draw_y = piece_y + sy
 					if draw_y >= 0:
-						draw_cell(draw_x, draw_y, current_color)
+						# Apply rotation transformation
+						var cell_center_x = (draw_x + 0.5) * CELL_SIZE
+						var cell_center_y = (draw_y + 0.5) * CELL_SIZE
+						
+						# Calculate rotated position relative to piece center
+						var offset_x = cell_center_x - piece_center_x
+						var offset_y = cell_center_y - piece_center_y
+						
+						var rotated_x = offset_x * cos_angle - offset_y * sin_angle
+						var rotated_y = offset_x * sin_angle + offset_y * cos_angle
+						
+						var final_x = (piece_center_x + rotated_x) / CELL_SIZE - 0.5
+						var final_y = (piece_center_y + rotated_y) / CELL_SIZE - 0.5
+						
+						draw_cell(final_x, final_y, current_color)
 	
 	# Draw game over text
 	if game_over:
@@ -322,7 +409,8 @@ func _draw():
 		draw_rect(Rect2(center_x - 100, center_y - 40, 200, 80), Color(0, 0, 0, 0.8))
 
 ## Draws a single cell at the given board coordinates with the specified color.
-func draw_cell(x: int, y: int, color: Color):
+## Coordinates can be float values for animation purposes.
+func draw_cell(x: float, y: float, color: Color):
 	var rect = Rect2(x * CELL_SIZE + 1, y * CELL_SIZE + 1, CELL_SIZE - 2, CELL_SIZE - 2)
 	draw_rect(rect, color)
 	# Add a lighter border for 3D effect
