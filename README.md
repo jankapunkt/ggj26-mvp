@@ -1,6 +1,6 @@
-# ggj26-mvp - Tetris Clone
+# ggj26-mvp - GGJ26 Game Project
 
-Building a throw-away prototype for GGJ26 - A minimal Tetris clone for learning Godot game development.
+Game prototypes for GGJ26. The main project is a vertical chase game. A Tetris prototype is also included in the `tetris/` folder.
 
 ## Project Setup
 
@@ -15,38 +15,44 @@ Building a throw-away prototype for GGJ26 - A minimal Tetris clone for learning 
    cd ggj26-mvp
    ```
 
-2. **Open the project in Godot:**
+2. **Open the main project in Godot:**
    - Launch Godot Engine
    - Click "Import" on the project manager
-   - Navigate to the project folder and select `project.godot`
+   - Navigate to the project folder and select `project.godot` (at root level)
    - Click "Import & Edit"
 
 3. **Run the game:**
    - Press F5 or click the "Play" button in the top-right corner
    - The game will start immediately
 
-## How to Play
+### Tetris Prototype
+
+The Tetris prototype is located in the `tetris/` folder:
+- To play Tetris, open `tetris/project.godot` in Godot
+
+## Main Game - Vertical Chase Game
+
+A vertical scrolling game where you avoid enemies while being chased by an entity.
 
 ### Controls
-- **← / A**: Move piece left
-- **→ / D**: Move piece right
-- **↓ / S**: Move piece down faster (soft drop)
-- **↑ / W / Space**: Rotate piece clockwise
-- **Shift** (hold): Slow down falling speed
-- **Enter**: Hard drop (instant drop to bottom)
-- **Enter** (when game over): Restart game
-- **Escape**: Pause Game
+- **A / D or Arrow Keys**: Move left/right
+- **1-5**: Switch between abilities
+- **Enter**: Restart (when game over)
 
-### Objective
-- Stack falling tetromino pieces to create complete horizontal lines
-- Complete lines are cleared and you earn points
-- Game ends when pieces stack to the top of the board
+### Game Features
 
-### Scoring
-- 1 line: 40 points
-- 2 lines: 100 points
-- 3 lines: 300 points
-- 4 lines (Tetris): 1200 points
+- **9:16 Portrait viewport** (540x960)
+- **Player positioned in upper third** of screen
+- **Elliptic chase entity** that follows the player
+- **Infinite scrolling** - background moves upward creating downward movement illusion
+- **Three enemy types** (Triangle, Square, Hexagon)
+- **Random enemy spawning** with decreasing intervals
+- **One enemy at a time** on screen
+- **Collision detection** - touching enemy triggers game over
+- **5 Abilities** - player can switch between them (functions pending implementation)
+- **Game over screen** with "you dies" message
+
+See [GAME_README.md](GAME_README.md) for detailed documentation.
 
 ## Project Structure
 
@@ -54,48 +60,69 @@ Building a throw-away prototype for GGJ26 - A minimal Tetris clone for learning 
 ggj26-mvp/
 ├── project.godot           # Main project configuration
 ├── icon.svg                # Project icon
-├── scenes/
-│   └── main.tscn          # Main game scene
-├── scripts/
-│   ├── tetris_game.gd     # Core Tetris game logic
-│   └── ui_controller.gd   # UI management
-└── README.md
+├── scenes/                 # Game scenes
+│   ├── main.tscn          # Main game scene
+│   └── enemy.tscn         # Enemy scene
+├── scripts/                # Game scripts
+│   ├── game.gd            # Core game logic
+│   ├── player.gd          # Player controller
+│   ├── chaser.gd          # Chase entity
+│   └── enemy.gd           # Enemy behavior
+├── tetris/                 # Tetris prototype (separate project)
+│   ├── project.godot      # Tetris project file
+│   ├── scenes/
+│   └── scripts/
+├── README.md              # This file
+└── GAME_README.md         # Detailed game documentation
 ```
 
 ## Development Notes
 
-### Core Components
+### Main Game Components
 
-#### tetris_game.gd
+#### game.gd
 The main game controller that handles:
-- Game board state (10x20 grid)
-- 7 tetromino shapes (I, O, T, S, Z, J, L)
-- Piece movement, rotation, and collision detection
-- Line clearing and scoring
-- Game over detection
+- Infinite scrolling background effect
+- Enemy spawning with decreasing intervals
+- Collision detection between player and enemies
+- Game state management (running/game over)
+- Ability switching system (1-5 keys)
 
-Key functions:
-- `spawn_piece()`: Creates a new random tetromino
-- `move_piece()`: Handles piece movement with collision detection
-- `rotate_piece()`: Rotates pieces with wall kick support
-- `clear_lines()`: Detects and removes complete lines
-- `_draw()`: Custom rendering of the game board
+#### player.gd
+Player controller:
+- Horizontal movement (A/D or arrow keys)
+- Boundary constraints to keep player on screen
+- Collision shape for enemy detection
 
-#### ui_controller.gd
-Manages the user interface:
-- Score display
-- Game over message
-- Control instructions
+#### chaser.gd
+Chase entity that:
+- Follows player with smooth interpolation
+- Renders as elliptic shape
+- Creates pressure on player
+
+#### enemy.gd
+Enemy behavior:
+- Three visual types with different shapes
+- Moves upward to simulate downward scrolling
+- Destroys itself when off-screen
+- Signals when destroyed for spawn management
+
+### Tetris Prototype Components
+
+The `tetris/` folder contains a complete Tetris implementation (see tetris/PROJECT_SUMMARY.md).
 
 ### Godot Features Used
 
-This project demonstrates several Godot concepts:
+This project demonstrates:
 - **Node2D**: Base class for 2D game objects
-- **Custom drawing**: Using `_draw()` for rendering the game board
-- **Input handling**: Processing keyboard input with Input actions
-- **Timer logic**: Implementing automatic piece falling
+- **CharacterBody2D**: Physics-based player movement
+- **Area2D**: Collision detection for enemies
+- **Custom drawing**: Using `_draw()` for rendering shapes
+- **Input handling**: Processing keyboard input
+- **Timer logic**: Enemy spawning intervals
 - **CanvasLayer**: UI overlay system
-- **Scene structure**: Organizing game components
+- **Signals**: Communication between nodes
+- **Scene instancing**: Dynamic enemy spawning
 
 ### For Collaborative Development
 
@@ -103,19 +130,21 @@ When working on this project:
 1. Keep the Godot project files in version control
 2. The `.godot/` folder is gitignored (auto-generated by Godot)
 3. Scene files (.tscn) are text-based and merge-friendly
-4. Scripts use GDScript with documentation comments
-5. All game logic is well-commented for learning purposes
+4. Scripts use GDScript with clear commenting
+5. Main game is at root level, Tetris prototype in `tetris/` folder
 
-### Extending the Game
+### Extending the Main Game
 
 Ideas for improvements:
-- Add a "next piece" preview
-- Implement a hold piece feature
-- Add levels with increasing speed
+- Implement specific functions for the 5 abilities
+- Add scoring system based on survival time
+- Add visual effects for enemy destruction
 - Include sound effects and music
-- Add particle effects for line clears
-- Implement a high score system
-- Add different game modes (e.g., timed, marathon)
+- Add particle effects
+- Implement difficulty curves
+- Add power-ups or collectibles
+- Add high score system
+- Add different game modes
 
 ## Resources
 
