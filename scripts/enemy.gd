@@ -5,6 +5,9 @@ signal enemy_destroyed
 var enemy_type = 1
 var move_speed = 120.0
 
+# Enemy size configuration - 85% of screen width (1080 * 0.85 = 918)
+const ENEMY_SIZE = 918.0
+
 func _ready():
 	connect("body_entered", Callable(self, "_on_body_entered"))
 
@@ -34,10 +37,12 @@ func _draw():
 			draw_hexagon()
 
 func draw_triangle():
+	var half_width = ENEMY_SIZE / 2
+	var height = half_width * 1.732  # Equilateral triangle height
 	var points = PackedVector2Array([
-		Vector2(0, -30),
-		Vector2(-26, 15),
-		Vector2(26, 15)
+		Vector2(0, -height / 2),
+		Vector2(-half_width, height / 2),
+		Vector2(half_width, height / 2)
 	])
 	draw_colored_polygon(points, Color(0.9, 0.4, 0.2, 1.0))
 	for i in range(3):
@@ -45,12 +50,12 @@ func draw_triangle():
 		draw_line(points[i], points[next_i], Color(1.0, 0.5, 0.3, 1.0), 2.0)
 
 func draw_square():
-	var size = 30
-	draw_rect(Rect2(-size, -size, size * 2, size * 2), Color(0.2, 0.4, 0.9, 1.0))
-	draw_rect(Rect2(-size, -size, size * 2, size * 2), Color(0.3, 0.5, 1.0, 1.0), false, 2.0)
+	var half_size = ENEMY_SIZE / 2
+	draw_rect(Rect2(-half_size, -half_size, ENEMY_SIZE, ENEMY_SIZE), Color(0.2, 0.4, 0.9, 1.0))
+	draw_rect(Rect2(-half_size, -half_size, ENEMY_SIZE, ENEMY_SIZE), Color(0.3, 0.5, 1.0, 1.0), false, 2.0)
 
 func draw_hexagon():
-	var radius = 30
+	var radius = ENEMY_SIZE / 2
 	var num_points = 6
 	var points = PackedVector2Array()
 	

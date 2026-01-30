@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 const SPEED = 200.0
-const VIEWPORT_WIDTH = 540
+const VIEWPORT_WIDTH = 1080
 
 func _ready():
 	queue_redraw()
