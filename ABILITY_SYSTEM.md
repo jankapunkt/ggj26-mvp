@@ -27,13 +27,13 @@ This creates a rock-paper-scissors-style mechanic where strategic ability select
 
 ## Enemy Types
 
-The game now spawns 5 different enemy types (previously 3):
+The game now spawns 5 different enemy types (previously 3), all rendered as circles with different colors:
 
-1. **Enemy 1 - Triangle (Violet)**
-2. **Enemy 2 - Square (Yellow)**
-3. **Enemy 3 - Hexagon (Red)**
-4. **Enemy 4 - Pentagon (Green)** *(new)*
-5. **Enemy 5 - Circle (Blue)** *(new)*
+1. **Enemy 1 - Circle (Violet)**
+2. **Enemy 2 - Circle (Yellow)**
+3. **Enemy 3 - Circle (Red)**
+4. **Enemy 4 - Circle (Green)**
+5. **Enemy 5 - Circle (Blue)**
 
 Each enemy uses the same color as its corresponding ability number.
 
@@ -84,11 +84,10 @@ When the player collides with an enemy without the winning ability:
    - Modified `_draw()` to use dynamic color based on ability
 
 3. **scripts/enemy.gd**
-   - Updated `_draw()` to handle 5 enemy types
+   - Updated `_draw()` to render all enemy types as circles
    - Added `get_enemy_color()` to retrieve color from game controller
-   - Added `draw_pentagon()` for enemy type 4
-   - Added `draw_circle_enemy()` for enemy type 5
-   - Updated all draw functions to accept a color parameter
+   - Removed shape-specific drawing functions (triangle, square, hexagon, pentagon)
+   - Added `draw_circle_enemy()` for unified circle rendering with color
 
 ## Controls
 
