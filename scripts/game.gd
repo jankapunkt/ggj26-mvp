@@ -20,6 +20,16 @@ var current_enemy = null
 var time_since_last_spawn = 0.0
 var current_ability = 1  # Default ability 1
 
+# Ability system configuration
+# Maps ability number to: [color, [enemies it wins against]]
+var ability_config = {
+	1: {"color": Color(0.58, 0.0, 0.83), "name": "Violet", "wins_against": [2, 4]},  # Violet wins 2,4
+	2: {"color": Color(1.0, 1.0, 0.0), "name": "Yellow", "wins_against": [3, 5]},    # Yellow wins 3,5
+	3: {"color": Color(1.0, 0.0, 0.0), "name": "Red", "wins_against": [4, 1]},       # Red wins 4,1
+	4: {"color": Color(0.0, 1.0, 0.0), "name": "Green", "wins_against": [5, 2]},     # Green wins 5,2
+	5: {"color": Color(0.0, 0.0, 1.0), "name": "Blue", "wins_against": [1, 3]}       # Blue wins 1,3
+}
+
 # Node references
 @onready var player = $Player
 @onready var chaser = $Chaser
@@ -29,6 +39,7 @@ var current_ability = 1  # Default ability 1
 func _ready():
 	game_over_screen.visible = false
 	update_ability_display()
+	update_player_color()
 
 func _process(delta):
 	if game_over:
@@ -41,6 +52,7 @@ func _process(delta):
 		if Input.is_action_just_pressed("ability_%d" % i):
 			current_ability = i
 			update_ability_display()
+			update_player_color()
 	
 	# Update scroll effect
 	scroll_offset += SCROLL_SPEED * delta
@@ -61,8 +73,8 @@ func update_chaser():
 	chaser.queue_redraw()
 
 func spawn_enemy():
-	# Random enemy type (1-3)
-	var enemy_type = randi() % 3 + 1
+	# Random enemy type (1-5)
+	var enemy_type = randi() % 5 + 1
 	var enemy = preload("res://scenes/enemy.tscn").instantiate()
 	
 	# Spawn centered horizontally at bottom of screen
@@ -85,9 +97,16 @@ func check_collision_with_enemy(enemy):
 	
 	var distance = player.position.distance_to(enemy.position)
 	# Conservative collision threshold for large enemies
-	# Player radius (25) + minimum enemy radius (~459 for hexagon/triangle)
+	# Player radius (25) + enemy radius (varies by shape: ~459 for most shapes)
 	if distance < 484:
-		trigger_game_over()
+		# Check if player's ability wins against this enemy
+		if does_player_win(enemy.enemy_type):
+			# Player wins - remove enemy, player survives
+			enemy.emit_signal("enemy_destroyed")
+			enemy.queue_free()
+		else:
+			# Player loses - game over
+			trigger_game_over()
 
 func trigger_game_over():
 	game_over = true
@@ -97,7 +116,22 @@ func restart_game():
 	get_tree().reload_current_scene()
 
 func update_ability_display():
-	ability_label.text = "Ability: %d" % current_ability
+	var ability_name = ability_config[current_ability]["name"]
+	ability_label.text = "Ability %d: %s" % [current_ability, ability_name]
+
+func update_player_color():
+	player.current_color = ability_config[current_ability]["color"]
+	player.queue_redraw()
+
+func does_player_win(enemy_type: int) -> bool:
+	# Check if current ability wins against the given enemy type
+	return enemy_type in ability_config[current_ability]["wins_against"]
+
+func get_enemy_color(enemy_type: int) -> Color:
+	# Return the color for the given enemy type (enemies use same colors as abilities)
+	if enemy_type in ability_config:
+		return ability_config[enemy_type]["color"]
+	return Color.WHITE
 
 func _draw():
 	# Draw scrolling background pattern
