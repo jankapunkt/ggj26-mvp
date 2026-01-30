@@ -3,7 +3,7 @@ extends Area2D
 signal enemy_destroyed
 
 var enemy_type = 1
-var move_speed = 200.0
+var move_speed = 400.0
 
 # Enemy size configuration - 85% of screen width (1080 * 0.85 = 918)
 const ENEMY_SIZE = 918.0

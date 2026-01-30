@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-const SPEED = 200.0
+const SPEED = 400.0
 const VIEWPORT_WIDTH = 1080
 const PLAYER_RADIUS = 250
 
@@ -8,7 +8,7 @@ func _ready():
 	queue_redraw()
 
 func _physics_process(delta):
-	# Get input direction
+	# Get input direction	
 	var direction = Input.get_axis("move_left", "move_right")
 	
 	if direction:

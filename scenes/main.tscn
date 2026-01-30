@@ -4,8 +4,8 @@
 [ext_resource type="Script" uid="uid://2vqj2c81ktl8" path="res://scripts/player.gd" id="2_player"]
 [ext_resource type="Script" uid="uid://6vde4q5c63re" path="res://scripts/chaser.gd" id="3_chaser"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
-size = Vector2(50, 50)
+[sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
+radius = 125.0
 
 [node name="Game" type="Node2D" unique_id=340423280]
 script = ExtResource("1_main")
@@ -15,7 +15,7 @@ position = Vector2(270, 320)
 script = ExtResource("2_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1812878886]
-shape = SubResource("RectangleShape2D_player")
+shape = SubResource("CircleShape2D_sugp2")
 
 [node name="Chaser" type="Node2D" parent="." unique_id=520295967]
 position = Vector2(270, 500)

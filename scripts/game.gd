@@ -6,7 +6,7 @@ const VIEWPORT_HEIGHT = 1920
 const PLAYER_Y_POSITION = VIEWPORT_HEIGHT / 3  # Upper third
 
 # Scrolling configuration
-const SCROLL_SPEED = 200.0  # Pixels per second
+const SCROLL_SPEED = 400.0  # Pixels per second
 
 # Enemy spawn configuration
 var spawn_interval = 2.0  # Start with 3 seconds
@@ -84,10 +84,10 @@ func check_collision_with_enemy(enemy):
 		return
 	
 	var distance = player.position.distance_to(enemy.position)
-	print_debug(distance)
+
 	# Conservative collision threshold for large enemies
 	# Player radius (25) + minimum enemy radius (~459 for hexagon/triangle)
-	if distance < 459:
+	if distance <= 585:
 		trigger_game_over()
 
 func trigger_game_over():
