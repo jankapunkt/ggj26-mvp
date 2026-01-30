@@ -59,6 +59,7 @@ func update_chaser():
 	# Make chaser follow player with some smoothness
 	var target_pos = player.position
 	chaser.position = chaser.position.lerp(target_pos, 0.05)
+	chaser.queue_redraw()
 
 func spawn_enemy():
 	# Random enemy type (1-3)
@@ -84,7 +85,7 @@ func check_collision_with_enemy(enemy):
 		return
 	
 	var distance = player.position.distance_to(enemy.position)
-	if distance < 40:  # Collision threshold
+	if distance < 60:  # Collision threshold (25 + 35 for collision shapes)
 		trigger_game_over()
 
 func trigger_game_over():

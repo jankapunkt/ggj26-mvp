@@ -20,7 +20,7 @@ func _process(delta):
 	queue_redraw()
 
 func _on_body_entered(body):
-	if body.name == "Player":
+	if body.is_in_group("player"):
 		# Notify game controller of collision
 		get_parent().check_collision_with_enemy(self)
 

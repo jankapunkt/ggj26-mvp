@@ -4,7 +4,7 @@ const SPEED = 200.0
 const VIEWPORT_WIDTH = 540
 
 func _ready():
-	pass
+	queue_redraw()
 
 func _physics_process(delta):
 	# Get input direction

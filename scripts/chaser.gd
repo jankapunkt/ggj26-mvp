@@ -1,7 +1,7 @@
 extends Node2D
 
 func _ready():
-	pass
+	queue_redraw()
 
 func _draw():
 	# Draw elliptic shape (elongated vertically)
