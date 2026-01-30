@@ -38,7 +38,7 @@ func _draw():
 
 func draw_triangle():
 	var half_width = ENEMY_SIZE / 2
-	var height = half_width * 1.732  # Equilateral triangle height
+	var height = ENEMY_SIZE * 0.866  # Equilateral triangle height (sqrt(3)/2)
 	var points = PackedVector2Array([
 		Vector2(0, -height / 2),
 		Vector2(-half_width, height / 2),
