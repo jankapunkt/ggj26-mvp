@@ -1,8 +1,8 @@
 extends Node2D
 
 # Game configuration
-const VIEWPORT_WIDTH = 540
-const VIEWPORT_HEIGHT = 960
+const VIEWPORT_WIDTH = 1080
+const VIEWPORT_HEIGHT = 1920
 const PLAYER_Y_POSITION = VIEWPORT_HEIGHT / 3  # Upper third
 
 # Scrolling configuration
@@ -56,9 +56,8 @@ func _process(delta):
 		time_since_last_spawn = 0.0
 
 func update_chaser():
-	# Make chaser follow player with some smoothness
-	var target_pos = player.position
-	chaser.position = chaser.position.lerp(target_pos, 0.05)
+	# Keep chaser static above player (fixed offset, not following)
+	chaser.position = Vector2(player.position.x, player.position.y - 100)
 	chaser.queue_redraw()
 
 func spawn_enemy():
@@ -66,8 +65,8 @@ func spawn_enemy():
 	var enemy_type = randi() % 3 + 1
 	var enemy = preload("res://scenes/enemy.tscn").instantiate()
 	
-	# Spawn at bottom of screen
-	enemy.position = Vector2(randf_range(50, VIEWPORT_WIDTH - 50), VIEWPORT_HEIGHT + 50)
+	# Spawn centered horizontally at bottom of screen
+	enemy.position = Vector2(VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT + 50)
 	enemy.enemy_type = enemy_type
 	enemy.connect("enemy_destroyed", Callable(self, "_on_enemy_destroyed"))
 	
@@ -85,7 +84,9 @@ func check_collision_with_enemy(enemy):
 		return
 	
 	var distance = player.position.distance_to(enemy.position)
-	if distance < 60:  # Collision threshold (25 + 35 for collision shapes)
+	# Conservative collision threshold for large enemies
+	# Player radius (25) + minimum enemy radius (~459 for hexagon/triangle)
+	if distance < 484:
 		trigger_game_over()
 
 func trigger_game_over():
