@@ -61,6 +61,20 @@ func _process(delta):
 			update_ability_display()
 			update_player_color()
 	
+	if Input.is_action_just_pressed("ability_left"):
+		current_ability = current_ability - 1
+		if current_ability < 1:
+			current_ability = 4
+		update_ability_display()
+		update_player_color()
+		
+	if Input.is_action_just_pressed("ability_right"):
+		current_ability = current_ability + 1
+		if current_ability > 4:
+			current_ability = 1
+		update_ability_display()
+		update_player_color()
+	
 	# Update scroll effect
 	scroll_offset += SCROLL_SPEED * delta
 	queue_redraw()
