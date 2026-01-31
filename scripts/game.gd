@@ -23,11 +23,12 @@ var current_ability = 1  # Default ability 1
 # Ability system configuration
 # Maps ability number to: [color, [enemies it wins against]]
 var ability_config = {
+	0: {"color": Color(1.0, 1.0, 1.0), "name": "White", "wins_against": []},
 	1: {"color": Color(0.58, 0.0, 0.83), "name": "Violet", "wins_against": [2, 4]},  # Violet wins 2,4
 	2: {"color": Color(1.0, 1.0, 0.0), "name": "Yellow", "wins_against": [3, 5]},    # Yellow wins 3,5
 	3: {"color": Color(1.0, 0.0, 0.0), "name": "Red", "wins_against": [4, 1]},       # Red wins 4,1
 	4: {"color": Color(0.0, 1.0, 0.0), "name": "Green", "wins_against": [5, 2]},     # Green wins 5,2
-	5: {"color": Color(0.0, 0.0, 1.0), "name": "Blue", "wins_against": [1, 3]}       # Blue wins 1,3
+	5: {"color": Color(0.0, 0.0, 1.0), "name": "Blue", "wins_against": [1, 3]},       # Blue wins 1,3
 }
 
 # Node references
@@ -96,9 +97,10 @@ func check_collision_with_enemy(enemy):
 		return
 	
 	var distance = player.position.distance_to(enemy.position)
+	print_debug(distance)
 	# Conservative collision threshold for large enemies
 	# Player radius (25) + enemy radius (varies by shape: ~459 for most shapes)
-	if distance < 484:
+	if distance < 585:
 		# Check if player's ability wins against this enemy
 		if does_player_win(enemy.enemy_type):
 			# Player wins - remove enemy, player survives

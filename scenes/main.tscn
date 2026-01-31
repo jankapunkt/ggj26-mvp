@@ -1,29 +1,29 @@
-[gd_scene load_steps=5 format=3 uid="uid://br7nag8x4a8ki"]
+[gd_scene format=3 uid="uid://br7nag8x4a8ki"]
 
-[ext_resource type="Script" path="res://scripts/game.gd" id="1_main"]
-[ext_resource type="Script" path="res://scripts/player.gd" id="2_player"]
-[ext_resource type="Script" path="res://scripts/chaser.gd" id="3_chaser"]
+[ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
+[ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
+[ext_resource type="Script" uid="uid://d4i8t72v8v56x" path="res://scripts/chaser.gd" id="3_chaser"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_player"]
-size = Vector2(50, 50)
+[sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
+radius = 125.0
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=674499132]
 script = ExtResource("1_main")
 
-[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=90918632 groups=["player"]]
 position = Vector2(270, 320)
 script = ExtResource("2_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
-shape = SubResource("RectangleShape2D_player")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1273362723]
+shape = SubResource("CircleShape2D_sugp2")
 
-[node name="Chaser" type="Node2D" parent="."]
+[node name="Chaser" type="Node2D" parent="." unique_id=1613410077]
 position = Vector2(270, 500)
 script = ExtResource("3_chaser")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=825830947]
 
-[node name="GameOverScreen" type="Control" parent="CanvasLayer"]
+[node name="GameOverScreen" type="Control" parent="CanvasLayer" unique_id=1920537810]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -31,7 +31,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen" unique_id=192661714]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -40,7 +40,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=771288411]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -59,7 +59,7 @@ text = "you dies"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=1195549212]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -77,7 +77,7 @@ text = "Press ENTER to restart"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AbilityLabel" type="Label" parent="CanvasLayer"]
+[node name="AbilityLabel" type="Label" parent="CanvasLayer" unique_id=321355448]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 150.0
@@ -85,7 +85,7 @@ offset_bottom = 40.0
 theme_override_font_sizes/font_size = 20
 text = "Ability: 1"
 
-[node name="ControlsLabel" type="Label" parent="CanvasLayer"]
+[node name="ControlsLabel" type="Label" parent="CanvasLayer" unique_id=1616662183]
 offset_left = 10.0
 offset_top = 40.0
 offset_right = 300.0
