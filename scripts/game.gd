@@ -69,6 +69,13 @@ func _process(delta):
 	# Update chaser to follow player
 	update_chaser()
 	
+	# Check for continuous collision with current enemy
+	if current_enemy != null:
+		check_collision_with_enemy(current_enemy)
+	
+	# Check for collision with chaser
+	check_collision_with_chaser(chaser)
+	
 	# Handle enemy spawning
 	time_since_last_spawn += delta
 	if time_since_last_spawn >= spawn_interval and current_enemy == null:
@@ -153,11 +160,15 @@ func check_collision_with_enemy(enemy):
 				var drag_strength = 300.0
 				player.drag_force = drag_direction * drag_strength
 
-func check_collision_with_chaser():
+func check_collision_with_chaser(chaser):
 	if game_over:
 		return
-	# Player collided with chaser - game over
-	trigger_game_over()
+	var distance = player.position.distance_to(chaser.position)
+	# Conservative collision threshold for large enemies
+	# Player radius (125) + chaser radius (~459) = (rounded up) 585
+	if distance <= 585:
+		# Player loses - game over
+		trigger_game_over()
 
 
 func get_enemy_color(enemy_type: int) -> Color:

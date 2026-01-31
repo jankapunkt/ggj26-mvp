@@ -9,7 +9,7 @@ var move_speed = 120.0
 const ENEMY_SIZE = 918.0
 
 func _ready():
-	connect("body_entered", Callable(self, "_on_body_entered"))
+	pass
 
 func _process(delta):
 	# Move enemy upward (creating illusion of player moving down)
@@ -28,11 +28,6 @@ func _process(delta):
 		queue_free()
 	
 	queue_redraw()
-
-func _on_body_entered(body):
-	if body.is_in_group("player"):
-		# Notify game controller of collision
-		get_parent().check_collision_with_enemy(self)
 
 func _draw():
 	var color = get_enemy_color()
