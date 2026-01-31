@@ -2,21 +2,33 @@
 
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
+[ext_resource type="Texture2D" uid="uid://7p1dfo23imhr" path="res://assets/images/background.jpeg" id="2_tefeu"]
 [ext_resource type="Script" uid="uid://d4i8t72v8v56x" path="res://scripts/chaser.gd" id="3_chaser"]
 [ext_resource type="AudioStream" uid="uid://drtc84d7wcx5l" path="res://assets/sounds/Pew_1.wav" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://fq6atjqhrsu0" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
 [ext_resource type="AudioStream" uid="uid://cf631fc3mu73c" path="res://assets/sounds/mask_switch_africa.wav" id="6_tefeu"]
+[ext_resource type="Texture2D" uid="uid://bswyot5brppgp" path="res://assets/images/shadow.png" id="4_tbgi4"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
-size = Vector2(2160, 100)
+size = Vector2(2160, 380)
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_main")
 
-[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+[node name="Sprite2D_A" type="Sprite2D" parent="." unique_id=1850269721]
+position = Vector2(540, 960)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_tefeu")
+
+[node name="Sprite2D_B" type="Sprite2D" parent="." unique_id=102926022]
+position = Vector2(540, -960)
+scale = Vector2(2.5, 2.5)
+texture = ExtResource("2_tefeu")
+
+[node name="Player" type="CharacterBody2D" parent="." unique_id=90918632 groups=["player"]]
 script = ExtResource("2_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
@@ -31,7 +43,11 @@ script = ExtResource("3_chaser")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser"]
 shape = SubResource("RectangleShape2D_chaser")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="Sprite2D" type="Sprite2D" parent="Chaser/CollisionShape2D" unique_id=917540479]
+texture = ExtResource("4_tbgi4")
+offset = Vector2(0, 100)
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=825830947]
 
 [node name="GameOverScreen" type="Control" parent="CanvasLayer"]
 layout_mode = 3

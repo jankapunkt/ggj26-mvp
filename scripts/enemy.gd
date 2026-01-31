@@ -68,6 +68,7 @@ func shrink(rate):
 		queue_free()
 	else:
 		# Update collision shape radius
+		$HitSound.play()
 		if collision_shape and collision_shape.shape:
 			collision_shape.shape.radius = current_size / 2
 	queue_redraw()
