@@ -13,6 +13,9 @@ var spawn_interval = 3.0  # Start with 3 seconds
 var min_spawn_interval = 0.5  # Minimum 0.5 seconds
 var spawn_decrease_rate = 0.1  # Decrease by 0.1 seconds each spawn
 
+# Drag force configuration
+const MIN_DRAG_DISTANCE = 0.1  # Minimum distance threshold to prevent division by zero when normalizing
+
 # Game state
 var game_over = false
 var scroll_offset = 0.0
@@ -133,7 +136,7 @@ func check_collision_with_enemy(enemy):
 			# Calculate direction from player to chaser (upward, toward top of screen)
 			var direction_vector = chaser.position - player.position
 			# Only apply drag if there's a meaningful distance (avoid division by zero)
-			if direction_vector.length() > 0.1:
+			if direction_vector.length() > MIN_DRAG_DISTANCE:
 				var drag_direction = direction_vector.normalized()
 				# Apply a strong drag force (300 units/sec)
 				var drag_strength = 300.0
