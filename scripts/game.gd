@@ -112,14 +112,14 @@ func _process(delta):
 		time_since_last_spawn = 0.0
 
 func update_background(delta):
-	bg_a.position.y += BG_SCROLL_SPEED * delta
-	bg_b.position.y += BG_SCROLL_SPEED * delta
+	bg_a.position.y -= BG_SCROLL_SPEED * delta
+	bg_b.position.y -= BG_SCROLL_SPEED * delta
 
 	# Looping
-	if bg_a.position.y >= BG_HEIGHT * 1.5:
-		bg_a.position.y = bg_b.position.y - BG_HEIGHT
-	if bg_b.position.y >= BG_HEIGHT * 1.5:
-		bg_b.position.y = bg_a.position.y - BG_HEIGHT
+	if bg_a.position.y <= -BG_HEIGHT * 0.5:
+		bg_a.position.y = bg_b.position.y + BG_HEIGHT
+	if bg_b.position.y <= -BG_HEIGHT * 0.5:
+		bg_b.position.y = bg_a.position.y + BG_HEIGHT
 
 
 func trigger_game_over():
