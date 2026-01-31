@@ -8,14 +8,14 @@ const VIEWPORT_WIDTH = 1080
 const PULSE_SPEED = 0.005  # Animation speed for pulsing effect
 const PULSE_INTENSITY = 0.2  # Scale factor for pulse animation
 
-# References to game controller (parent node)
+# References to game controller (grandparent node through CanvasLayer)
 var parent_game_controller = null
 var last_ability = -1
 var last_enemy = null
 
 func _ready():
-	# Get reference to game controller (parent node)
-	parent_game_controller = get_parent()
+	# Get reference to game controller (grandparent node: CanvasLayer -> Game)
+	parent_game_controller = get_parent().get_parent()
 
 func _draw():
 	if parent_game_controller == null:

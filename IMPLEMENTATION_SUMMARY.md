@@ -54,7 +54,7 @@ Successfully implemented a visual user interface that displays the five abilitie
 ### Modified Files
 1. **scenes/main.tscn**
    - Added reference to ability_ui.gd script
-   - Added AbilityUI node as child of Game node
+   - Added AbilityUI node as child of CanvasLayer (ensures always visible on top)
    - Minimal changes to existing scene structure
 
 ## Technical Implementation

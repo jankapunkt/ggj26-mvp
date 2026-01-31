@@ -95,5 +95,5 @@ theme_override_font_sizes/font_size = 14
 text = "A/D or Arrows: Move
 1-5: Switch Ability"
 
-[node name="AbilityUI" type="Node2D" parent="."]
+[node name="AbilityUI" type="Node2D" parent="CanvasLayer"]
 script = ExtResource("4_ability_ui")

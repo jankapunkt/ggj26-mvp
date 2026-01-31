@@ -69,11 +69,13 @@ Each ability is represented by its corresponding color:
    - Integrates with game controller for game state
 
 2. **scenes/main.tscn**
-   - Added AbilityUI node to the main game scene
+   - Added AbilityUI node as child of CanvasLayer
+   - Ensures UI renders on top of all game elements (always visible)
    - Connected to the game controller for state access
 
 ### Key Features
-- **Automatic parent detection**: Gets game controller reference via get_parent()
+- **Z-index layering**: Placed in CanvasLayer to always render above game objects
+- **Automatic parent detection**: Gets game controller reference via get_parent().get_parent()
 - **Dynamic state evaluation**: Checks current ability and enemy type each frame
 - **Animated effects**: Uses Time.get_ticks_msec() for smooth pulsing animation
 - **Color-coded feedback**: Visual cues help players make strategic decisions
