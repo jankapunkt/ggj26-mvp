@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
 [ext_resource type="Script" uid="uid://d4i8t72v8v56x" path="res://scripts/chaser.gd" id="3_chaser"]
-[ext_resource type="Script" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
+[ext_resource type="Script" uid="uid://fq6atjqhrsu0" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
@@ -12,14 +12,12 @@ radius = 125.0
 script = ExtResource("1_main")
 
 [node name="Player" type="CharacterBody2D" parent="." unique_id=90918632 groups=["player"]]
-position = Vector2(270, 320)
 script = ExtResource("2_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1273362723]
 shape = SubResource("CircleShape2D_sugp2")
 
 [node name="Chaser" type="Node2D" parent="." unique_id=1613410077]
-position = Vector2(270, 500)
 script = ExtResource("3_chaser")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=825830947]
@@ -95,5 +93,5 @@ theme_override_font_sizes/font_size = 14
 text = "A/D or Arrows: Move
 1-5: Switch Ability"
 
-[node name="AbilityUI" type="Node2D" parent="CanvasLayer"]
+[node name="AbilityUI" type="Node2D" parent="CanvasLayer" unique_id=1376048030]
 script = ExtResource("4_ability_ui")

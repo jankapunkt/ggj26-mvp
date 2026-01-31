@@ -37,10 +37,14 @@ var ability_config = {
 @onready var game_over_screen = $CanvasLayer/GameOverScreen
 @onready var ability_label = $CanvasLayer/AbilityLabel
 
+#-------------------------------------------------------------------------------
+# Game Loop
+#-------------------------------------------------------------------------------
 func _ready():
 	game_over_screen.visible = false
 	update_ability_display()
 	update_player_color()
+	set_chaser_position()
 
 func _process(delta):
 	if game_over:
@@ -68,10 +72,28 @@ func _process(delta):
 		spawn_enemy()
 		time_since_last_spawn = 0.0
 
+func trigger_game_over():
+	game_over = true
+	game_over_screen.visible = true
+
+func restart_game():
+	get_tree().reload_current_scene()
+	
+#-------------------------------------------------------------------------------
+# Chaser
+#-------------------------------------------------------------------------------
+
+func set_chaser_position():
+	chaser.position = Vector2(VIEWPORT_WIDTH / 2, 0)
+
 func update_chaser():
 	# Keep chaser static above player (fixed offset, not following)
-	chaser.position = Vector2(player.position.x, player.position.y - 100)
+	# chaser.position = Vector2(player.position.x, player.position.y - 100)
 	chaser.queue_redraw()
+
+#-------------------------------------------------------------------------------
+# Enemies
+#-------------------------------------------------------------------------------
 
 func spawn_enemy():
 	# Random enemy type (1-5)
@@ -110,18 +132,23 @@ func check_collision_with_enemy(enemy):
 			# Player loses - game over
 			trigger_game_over()
 
-func trigger_game_over():
-	game_over = true
-	game_over_screen.visible = true
 
-func restart_game():
-	get_tree().reload_current_scene()
+func get_enemy_color(enemy_type: int) -> Color:
+	# Return the color for the given enemy type (enemies use same colors as abilities)
+	if enemy_type in ability_config:
+		return ability_config[enemy_type]["color"]
+	return Color.WHITE
+
+#-------------------------------------------------------------------------------
+# Player
+#-------------------------------------------------------------------------------
 
 func update_ability_display():
 	var ability_name = ability_config[current_ability]["name"]
 	ability_label.text = "Ability %d: %s" % [current_ability, ability_name]
 
 func update_player_color():
+	player.position = Vector2(VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2)
 	player.current_color = ability_config[current_ability]["color"]
 	player.queue_redraw()
 
@@ -129,11 +156,6 @@ func does_player_win(enemy_type: int) -> bool:
 	# Check if current ability wins against the given enemy type
 	return enemy_type in ability_config[current_ability]["wins_against"]
 
-func get_enemy_color(enemy_type: int) -> Color:
-	# Return the color for the given enemy type (enemies use same colors as abilities)
-	if enemy_type in ability_config:
-		return ability_config[enemy_type]["color"]
-	return Color.WHITE
 
 func _draw():
 	# Draw scrolling background pattern

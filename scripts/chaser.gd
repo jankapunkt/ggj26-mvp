@@ -5,7 +5,7 @@ func _ready():
 
 func _draw():
 	# Draw elliptic shape (elongated vertically)
-	var ellipse_width = 30
+	var ellipse_width = 1080
 	var ellipse_height = 50
 	var num_points = 32
 	
