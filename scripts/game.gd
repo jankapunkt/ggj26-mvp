@@ -9,7 +9,7 @@ const PLAYER_Y_POSITION = VIEWPORT_HEIGHT / 3  # Upper third
 const SCROLL_SPEED = 100.0  # Pixels per second
 
 # Enemy spawn configuration
-var spawn_interval = 3.0  # Start with 3 seconds
+var spawn_interval = 5.0  # Start with 3 seconds
 var min_spawn_interval = 0.5  # Minimum 0.5 seconds
 var spawn_decrease_rate = 0.1  # Decrease by 0.1 seconds each spawn
 
@@ -24,6 +24,7 @@ var enemies = [] # hold current enemies
 var current_enemy = null
 var time_since_last_spawn = 0.0
 var current_ability = 4 # Default ability 4 (white)
+var max_enemy_size = 150.0
 
 @onready var ability_switch_sound_effect = [
 	preload("res://assets/sounds/mask_switch_africa.wav"),
@@ -33,9 +34,9 @@ var current_ability = 4 # Default ability 4 (white)
 # Ability system configuration
 # Maps ability number to: [color, [enemies it wins against]]
 var ability_config = {
-	1: {"color": Color(1.0, 0.0, 0.0, 0.7), "name": "Red", "wins_against": [1], "shrink": 25},
-	2: {"color": Color(0.0, 1.0, 0.0, 0.7), "name": "Green", "wins_against": [2], "shrink": 25},
-	3: {"color": Color(0.0, 0.0, 1.0, 0.7), "name": "Blue", "wins_against": [3], "shrink": 25 },
+	1: {"color": Color(1.0, 0.0, 0.0, 0.7), "name": "Red", "wins_against": [1], "shrink": 35},
+	2: {"color": Color(0.0, 1.0, 0.0, 0.7), "name": "Green", "wins_against": [2], "shrink": 35},
+	3: {"color": Color(0.0, 0.0, 1.0, 0.7), "name": "Blue", "wins_against": [3], "shrink": 35 },
 	4: {"color": Color(1.0, 1.0, 1.0, 0.7), "name": "White", "wins_against": [1,2, 3], "shrink": 10}
 }
 
@@ -134,10 +135,11 @@ func check_collision_with_chaser(chaser):
 #-------------------------------------------------------------------------------
 
 func spawn_enemy():
+	print_debug('spawn enemy', enemies.size())
 	# Random enemy type (1-5)
 	var enemy_type = randi() % 3 + 1
 	var enemy = preload("res://scenes/enemy.tscn").instantiate()
-	
+	enemy.init(max_enemy_size)
 	# Spawn centered horizontally at bottom of screen
 	enemy.position = Vector2(VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT + 50)
 	enemy.enemy_type = enemy_type
@@ -150,6 +152,8 @@ func spawn_enemy():
 	spawn_interval = max(min_spawn_interval, spawn_interval - spawn_decrease_rate)
 
 func _on_enemy_destroyed(enemy):
+	print_debug("on enemy destroyed", enemy)
+	max_enemy_size += 700
 	if enemy in enemies:
 		enemies.erase(enemy)
 
@@ -162,20 +166,13 @@ func check_collision_with_enemy(enemy):
 	# Player radius (125) + enemy radius (current_size / 2) + small buffer
 	var collision_threshold = 125 + (enemy.current_size / 2) + 10
 	if distance <= collision_threshold:
-		# Check if player's ability wins against this enemy
-		if does_player_win(enemy.enemy_type):
-			# Player wins - remove enemy, player survives
-			enemy.emit_signal("enemy_destroyed")
-			enemy.queue_free()
-		else:
-			# Player doesn't win - apply drag force towards chaser
-			# Calculate direction from player to chaser (upward, toward top of screen)
-			var direction_vector = chaser.position - player.position
-			# Only apply drag if there's a meaningful distance (avoid division by zero)
-			if direction_vector.length() > MIN_DRAG_DISTANCE:
-				var drag_direction = direction_vector.normalized()
-				player.drag_force = drag_direction * drag_strength
-
+		# Player doesn't win - apply drag force towards chaser
+		# Calculate direction from player to chaser (upward, toward top of screen)
+		var direction_vector = chaser.position - player.position
+		# Only apply drag if there's a meaningful distance (avoid division by zero)
+		if direction_vector.length() > MIN_DRAG_DISTANCE:
+			var drag_direction = direction_vector.normalized()
+			player.drag_force = drag_direction * drag_strength
 
 func get_enemy_color(enemy_type: int) -> Color:
 	# Return the color for the given enemy type (enemies use same colors as abilities)
