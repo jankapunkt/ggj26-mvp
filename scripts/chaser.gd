@@ -1,6 +1,7 @@
 extends Area2D
 
 func _ready():
+	z_index = 10 
 	body_entered.connect(_on_body_entered)
 	queue_redraw()
 
