@@ -56,7 +56,6 @@ var ability_config = {
 
 # Gauge system configuration
 const MAX_GAUGE = 100.0
-const GAUGE_DECREASE_PER_BULLET = 10.0
 const GAUGE_REFILL_RATE = 300.0  # Units per second when White ability is active
 var do_refill_gauge = false
 
@@ -65,6 +64,12 @@ var ability_gauges = {
 	1: 0,  # RedS
 	2: 0,  # Green
 	3: 0   # Blue
+}
+
+const GAUGE_DECREASE = {
+	1: 1,
+	2: 5,
+	3: 10
 }
 
 # Node references
@@ -353,13 +358,13 @@ func can_shoot() -> bool:
 		return true
 	# Abilities 1-3 require sufficient gauge
 	if current_ability in ability_gauges:
-		return ability_gauges[current_ability] >= GAUGE_DECREASE_PER_BULLET
+		return ability_gauges[current_ability] >= GAUGE_DECREASE[current_ability]
 	return false
 
 func consume_gauge():
 	"""Decrease gauge for current ability after shooting"""
 	if current_ability in ability_gauges:
-		ability_gauges[current_ability] = max(0, ability_gauges[current_ability] - GAUGE_DECREASE_PER_BULLET)
+		ability_gauges[current_ability] = max(0, ability_gauges[current_ability] - GAUGE_DECREASE[current_ability])
 
 func get_gauge_percentage(ability_id: int) -> float:
 	"""Get the gauge level as a percentage (0.0 to 1.0)"""

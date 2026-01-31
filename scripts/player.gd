@@ -13,7 +13,7 @@ var current_type = 4
 @export var bullet_speed := 600.0
 
 # Rapid fire settings for Ability 2
-@export var ability_2_fire_rate := 10.0  # shots per second
+@export var ability_2_fire_rate := 20.0  # shots per second
 var time_since_last_shot := 0.0
 
 # Drag force from enemies
@@ -45,8 +45,8 @@ func _physics_process(delta):
 	var shoot_pressed = Input.is_action_pressed("shoot")
 	var can_shoot_now = false
 	
-	# For Ability 2 (Green), allow rapid fire by holding space
-	if current_type == 2:
+	# For Ability 1 (RED), allow rapid fire by holding space
+	if current_type == 1:
 		# Calculate fire interval based on fire rate
 		var fire_interval = 1.0 / ability_2_fire_rate
 		# Check if enough time has passed since last shot
@@ -61,11 +61,11 @@ func _physics_process(delta):
 		# Check if we can shoot (gauge available)
 		if get_parent().has_method("can_shoot") and get_parent().can_shoot():
 			match current_type:
-				1: shoot_shotgun()
+				1: shoot_bullet()
 				2: shoot_shotgun()
 				3: shoot_shotgun()
 				4: shoot_bullet()
-				_: shoot_shotgun()
+				_: shoot_bullet()
 			# Consume gauge after shooting
 			if get_parent().has_method("consume_gauge"):
 				get_parent().consume_gauge()
