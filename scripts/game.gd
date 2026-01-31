@@ -134,8 +134,7 @@ func _process(delta):
 		check_collision_with_enemy(enemy)
 	
 	# Handle gauge refill when White ability (4) is active
-	if current_ability == 4:
-		refill_gauges(delta)
+	refill_gauges(current_ability, delta)
 	
 	# Handle enemy spawning
 	time_since_last_spawn += delta
@@ -301,10 +300,11 @@ func _on_bullet_hit_enemy(enemy):
 # Gauge System
 #-------------------------------------------------------------------------------
 
-func refill_gauges(delta):
+func refill_gauges(current, delta):
 	"""Refill all ability gauges when White ability is active"""
 	for ability_id in ability_gauges.keys():
-		ability_gauges[ability_id] = min(ability_gauges[ability_id] + GAUGE_REFILL_RATE * delta, MAX_GAUGE)
+		if ability_id != current:
+			ability_gauges[ability_id] = min(ability_gauges[ability_id] + GAUGE_REFILL_RATE * delta, MAX_GAUGE)
 
 func can_shoot() -> bool:
 	"""Check if the current ability has enough gauge to shoot"""
