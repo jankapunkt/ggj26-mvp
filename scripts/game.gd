@@ -49,7 +49,7 @@ const BG_HEIGHT = 1920
 # Ability system configuration
 # Maps ability number to: [color, [enemies it wins against]]
 var ability_config = {
-	1: {"color": Color(1.0, 0.0, 0.0, 0.1), "name": "Red", "wins_against": [1, 2, 3], "shrink": 35},
+	1: {"color": Color(1.0, 0.0, 0.0, 0.1), "name": "Red", "wins_against": [1, 2, 3], "shrink": 12},
 	2: {"color": Color(0.0, 1.0, 0.0, 0.1), "name": "Green", "wins_against": [1, 2, 3], "shrink": 75 },
 	3: {"color": Color(0.0, 0.0, 1.0, 0.1), "name": "Blue", "wins_against": [1, 2, 3], "shrink": 35 },
 	4: {"color": Color(1.0, 1.0, 1.0, 0.1), "name": "White", "wins_against": [1,2, 3], "shrink": 10}
