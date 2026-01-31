@@ -131,10 +131,13 @@ func check_collision_with_enemy(enemy):
 		else:
 			# Player doesn't win - apply drag force towards chaser
 			# Calculate direction from player to chaser (upward, toward top of screen)
-			var drag_direction = (chaser.position - player.position).normalized()
-			# Apply a strong drag force (300 units/sec)
-			var drag_strength = 300.0
-			player.drag_force = drag_direction * drag_strength
+			var direction_vector = chaser.position - player.position
+			# Only apply drag if there's a meaningful distance (avoid division by zero)
+			if direction_vector.length() > 0.1:
+				var drag_direction = direction_vector.normalized()
+				# Apply a strong drag force (300 units/sec)
+				var drag_strength = 300.0
+				player.drag_force = drag_direction * drag_strength
 
 func check_collision_with_chaser():
 	if game_over:
