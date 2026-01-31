@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://euvlxbrr3870"
-path="res://.godot/imported/background.jpeg-7a6ceb346b565c503232993a4cf80afd.ctex"
+uid="uid://ddgkqwcsklofe"
+path="res://.godot/imported/shadow-frame3.png-53944ebbaf153d97296971289934d953.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/images/background.jpeg"
-dest_files=["res://.godot/imported/background.jpeg-7a6ceb346b565c503232993a4cf80afd.ctex"]
+source_file="res://assets/images/shadow-frame3.png"
+dest_files=["res://.godot/imported/shadow-frame3.png-53944ebbaf153d97296971289934d953.ctex"]
 
 [params]
 
