@@ -68,16 +68,16 @@ func _draw():
 			draw_circle(circle_pos, CIRCLE_RADIUS, ability_color.darkened(0.4))
 			draw_circle(circle_pos, CIRCLE_RADIUS - 2, ability_color.darkened(0.6))
 		
-		# Draw gauge indicator as a filled arc at the bottom of the circle
+		# Draw gauge indicator as a filled arc around the circle
 		if gauge_percentage < 0.95:  # Only show gauge indicator when meaningfully depleted
 			# Draw empty gauge background (red)
 			draw_arc(circle_pos, CIRCLE_RADIUS + 4, 0, TAU, 32, Color(0.5, 0.0, 0.0, 0.7), 6.0)
-		
-		# Draw filled gauge (based on percentage)
-		if gauge_percentage > 0 and gauge_percentage < 1.0:
-			var gauge_angle = TAU * gauge_percentage
-			var gauge_color = Color(0.0, 1.0, 0.0, 0.9) if gauge_percentage > 0.3 else Color(1.0, 0.5, 0.0, 0.9)
-			draw_arc(circle_pos, CIRCLE_RADIUS + 4, 0, gauge_angle, 32, gauge_color, 6.0)
+			
+			# Draw filled gauge (based on percentage)
+			if gauge_percentage > 0:
+				var gauge_angle = TAU * gauge_percentage
+				var gauge_color = Color(0.0, 1.0, 0.0, 0.9) if gauge_percentage > 0.3 else Color(1.0, 0.5, 0.0, 0.9)
+				draw_arc(circle_pos, CIRCLE_RADIUS + 4, 0, gauge_angle, 32, gauge_color, 6.0)
 		
 		# Note: Ability numbers are conveyed through position and color
 		# Text drawing is omitted to keep the UI minimal and avoid font dependencies
