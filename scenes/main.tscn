@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
 [ext_resource type="Script" uid="uid://d4i8t72v8v56x" path="res://scripts/chaser.gd" id="3_chaser"]
+[ext_resource type="Script" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
@@ -93,3 +94,6 @@ offset_bottom = 100.0
 theme_override_font_sizes/font_size = 14
 text = "A/D or Arrows: Move
 1-5: Switch Ability"
+
+[node name="AbilityUI" type="Node2D" parent="CanvasLayer"]
+script = ExtResource("4_ability_ui")
