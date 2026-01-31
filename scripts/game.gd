@@ -139,7 +139,6 @@ func check_collision_with_enemy(enemy):
 		return
 	
 	var distance = player.position.distance_to(enemy.position)
-	print_debug(distance)
 	# Conservative collision threshold for large enemies
 	# Player radius (125) + enemy radius (~459) = (rounded up) 585
 	if distance <= 585:
