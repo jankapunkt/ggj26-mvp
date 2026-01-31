@@ -43,7 +43,7 @@ var ability_config = {
 func _ready():
 	game_over_screen.visible = false
 	update_ability_display()
-	update_player_color()
+	init_player()
 	set_chaser_position()
 
 func _process(delta):
@@ -143,12 +143,15 @@ func get_enemy_color(enemy_type: int) -> Color:
 # Player
 #-------------------------------------------------------------------------------
 
+func init_player():
+	player.position = Vector2(VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2)
+	update_player_color()
+
 func update_ability_display():
 	var ability_name = ability_config[current_ability]["name"]
 	ability_label.text = "Ability %d: %s" % [current_ability, ability_name]
 
 func update_player_color():
-	player.position = Vector2(VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT / 2)
 	player.current_color = ability_config[current_ability]["color"]
 	player.queue_redraw()
 
