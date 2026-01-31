@@ -4,6 +4,7 @@ signal enemy_destroyed
 
 var enemy_type = 1
 var move_speed = 120.0
+var size_initialized_by_spawner = false  # Track if size was set externally
 
 # Enemy size configuration - 85% of screen width (1080 * 0.85 = 918)
 const ENEMY_SIZE = 918.0
@@ -14,7 +15,7 @@ var current_size = ENEMY_SIZE
 
 func _ready():
 	# Only set random size if not already set by spawner
-	if current_size == ENEMY_SIZE:
+	if not size_initialized_by_spawner:
 		current_size = randi_range(100, ENEMY_SIZE)
 	move_speed = remap(current_size, 100, ENEMY_SIZE, 300, 120)
 	add_to_group("enemy")

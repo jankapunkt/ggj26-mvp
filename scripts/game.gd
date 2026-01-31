@@ -24,7 +24,7 @@ var game_over = false
 var scroll_offset = 0.0
 var enemies = []  # Array to hold multiple enemies
 var time_since_last_spawn = 0.0
-var current_ability = 4 # Default ability 1
+var current_ability = 4 # Default ability is 4 (White)
 
 # Ability system configuration
 # Maps ability number to: [color, [enemies it wins against]]
@@ -135,6 +135,7 @@ func spawn_enemy():
 	enemy.position = Vector2(spawn_x, VIEWPORT_HEIGHT + enemy_radius + 50)
 	enemy.enemy_type = enemy_type
 	enemy.current_size = initial_size  # Set size before ready() is called
+	enemy.size_initialized_by_spawner = true  # Flag that size was set externally
 	enemy.connect("enemy_destroyed", Callable(self, "_on_enemy_destroyed").bind(enemy))
 	
 	add_child(enemy)
