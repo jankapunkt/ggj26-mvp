@@ -24,6 +24,11 @@ var current_enemy = null
 var time_since_last_spawn = 0.0
 var current_ability = 4 # Default ability 1
 
+@onready var ability_switch_sound_effect = [
+	preload("res://assets/sounds/mask_switch_africa.wav"),
+	preload("res://assets/sounds/mask_switch_japan.wav"),
+]
+
 # Ability system configuration
 # Maps ability number to: [color, [enemies it wins against]]
 var ability_config = {
@@ -58,6 +63,7 @@ func _process(delta):
 	for i in range(1, 6):
 		if Input.is_action_just_pressed("ability_%d" % i):
 			current_ability = i
+			playAbilitySwitchSound()
 			update_ability_display()
 			update_player_color()
 	
@@ -186,6 +192,18 @@ func init_player():
 func update_ability_display():
 	var ability_name = ability_config[current_ability]["name"]
 	ability_label.text = "Ability %d: %s" % [current_ability, ability_name]
+	
+func playAbilitySwitchSound():
+	var ability_name = ability_config[current_ability]["name"]
+	if ability_name == "Red":
+		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(0)
+		$AbilitySwitchSound.play()
+	elif ability_name == "Blue":
+		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(1)
+		$AbilitySwitchSound.play()
+		
+			
+
 
 func update_player_color():
 	player.current_color = ability_config[current_ability]["color"]

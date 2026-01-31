@@ -1,9 +1,11 @@
-[gd_scene format=3 uid="uid://br7nag8x4a8ki"]
+[gd_scene load_steps=9 format=3 uid="uid://br7nag8x4a8ki"]
 
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
 [ext_resource type="Script" uid="uid://d4i8t72v8v56x" path="res://scripts/chaser.gd" id="3_chaser"]
+[ext_resource type="AudioStream" uid="uid://drtc84d7wcx5l" path="res://assets/sounds/Pew_1.wav" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://fq6atjqhrsu0" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
+[ext_resource type="AudioStream" uid="uid://cf631fc3mu73c" path="res://assets/sounds/mask_switch_africa.wav" id="6_tefeu"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
@@ -11,24 +13,27 @@ radius = 125.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
 size = Vector2(2160, 100)
 
-[node name="Game" type="Node2D" unique_id=674499132]
+[node name="Game" type="Node2D"]
 script = ExtResource("1_main")
 
-[node name="Player" type="CharacterBody2D" parent="." unique_id=90918632 groups=["player"]]
+[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
 script = ExtResource("2_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1273362723]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
 shape = SubResource("CircleShape2D_sugp2")
 
-[node name="Chaser" type="Area2D" parent="." unique_id=1613410077]
+[node name="ShootSound" type="AudioStreamPlayer" parent="Player"]
+stream = ExtResource("3_tbgi4")
+
+[node name="Chaser" type="Area2D" parent="."]
 script = ExtResource("3_chaser")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser" unique_id=1499105187]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser"]
 shape = SubResource("RectangleShape2D_chaser")
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=825830947]
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="GameOverScreen" type="Control" parent="CanvasLayer" unique_id=1920537810]
+[node name="GameOverScreen" type="Control" parent="CanvasLayer"]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -36,7 +41,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen" unique_id=192661714]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -45,7 +50,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=771288411]
+[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -64,7 +69,7 @@ text = "you dies"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=1195549212]
+[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen"]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -82,7 +87,7 @@ text = "Press ENTER to restart"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AbilityLabel" type="Label" parent="CanvasLayer" unique_id=321355448]
+[node name="AbilityLabel" type="Label" parent="CanvasLayer"]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 150.0
@@ -90,7 +95,7 @@ offset_bottom = 40.0
 theme_override_font_sizes/font_size = 20
 text = "Ability: 1"
 
-[node name="ControlsLabel" type="Label" parent="CanvasLayer" unique_id=1616662183]
+[node name="ControlsLabel" type="Label" parent="CanvasLayer"]
 offset_left = 10.0
 offset_top = 40.0
 offset_right = 300.0
@@ -100,5 +105,8 @@ text = "A/D or Arrows: Move
 1-5: Switch Ability
 Space: Shoot"
 
-[node name="AbilityUI" type="Node2D" parent="CanvasLayer" unique_id=1376048030]
+[node name="AbilityUI" type="Node2D" parent="CanvasLayer"]
 script = ExtResource("4_ability_ui")
+
+[node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_tefeu")
