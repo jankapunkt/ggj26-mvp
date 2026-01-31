@@ -1,4 +1,5 @@
-[gd_scene format=3 uid="uid://br7nag8x4a8ki"]
+[gd_scene load_steps=17 format=3 uid="uid://c2ghxvmwlgpsy"]
+
 
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
@@ -7,14 +8,16 @@
 [ext_resource type="AudioStream" uid="uid://drtc84d7wcx5l" path="res://assets/sounds/Pew_1.wav" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://fq6atjqhrsu0" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
 [ext_resource type="Texture2D" uid="uid://bswyot5brppgp" path="res://assets/images/shadow.png" id="4_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://dvcbb48kpbmjy" path="res://assets/images/japan-mask.png" id="5_a8y0u"]
+[ext_resource type="Texture2D" uid="uid://vc7gja3yknko" path="res://assets/images/mexican-mask.png" id="6_jkv2x"]
 [ext_resource type="AudioStream" uid="uid://cf631fc3mu73c" path="res://assets/sounds/mask_switch_africa.wav" id="6_tefeu"]
+[ext_resource type="Texture2D" uid="uid://dbnxsahsxucow" path="res://assets/images/anon-mask.png" id="7_jbj1t"]
+[ext_resource type="Texture2D" uid="uid://dd6smmivsvo43" path="res://assets/images/african-mask.png" id="8_muem4"]
 [ext_resource type="AudioStream" uid="uid://rjgooqxltxya" path="res://assets/sounds/gameover_sound.wav" id="9_85g3d"]
+[ext_resource type="AudioStream" uid="uid://dx4eduwaav2he" path="res://assets/sounds/player_death.wav" id="10_choun"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_85g3d"]
-load_path = "res://.godot/imported/ronin_mask.png-9aad5388a3b57ffb9789898f87da5fd8.ctex"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
 size = Vector2(2160, 380)
@@ -42,9 +45,22 @@ shape = SubResource("CircleShape2D_sugp2")
 [node name="ShootSound" type="AudioStreamPlayer" parent="Player" unique_id=933117923]
 stream = ExtResource("3_tbgi4")
 
-[node name="PlayerSprite" type="Sprite2D" parent="Player" unique_id=980271477]
-scale = Vector2(0.5, 0.5)
-texture = SubResource("CompressedTexture2D_85g3d")
+
+[node name="japan" type="Sprite2D" parent="Player"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("5_a8y0u")
+
+[node name="mexican" type="Sprite2D" parent="Player"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("6_jkv2x")
+
+[node name="anon" type="Sprite2D" parent="Player"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("7_jbj1t")
+
+[node name="african" type="Sprite2D" parent="Player"]
+scale = Vector2(0.3, 0.3)
+texture = ExtResource("8_muem4")
 
 [node name="Chaser" type="Area2D" parent="." unique_id=1957641735]
 script = ExtResource("3_chaser")
@@ -137,5 +153,10 @@ script = ExtResource("4_ability_ui")
 [node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="." unique_id=1547875291]
 stream = ExtResource("6_tefeu")
 
-[node name="GameOverSound" type="AudioStreamPlayer" parent="." unique_id=1830841189]
+[node name="EatSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("9_85g3d")
+pitch_scale = 0.8
+
+[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_choun")
+volume_db = -0.5

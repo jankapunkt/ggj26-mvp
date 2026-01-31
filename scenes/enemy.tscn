@@ -6,11 +6,11 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_enemy"]
 radius = 459.0
 
-[node name="Enemy" type="Area2D" unique_id=102575923]
+[node name="Enemy" type="Area2D" unique_id=1331457910]
 script = ExtResource("1_enemy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=108301891]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=325832879]
 shape = SubResource("CircleShape2D_enemy")
 
-[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=1104775784]
+[node name="HitSound" type="AudioStreamPlayer" parent="." unique_id=680983783]
 stream = ExtResource("2_md0e3")

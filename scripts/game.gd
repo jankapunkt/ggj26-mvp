@@ -5,8 +5,14 @@ const VIEWPORT_WIDTH = 1080
 const VIEWPORT_HEIGHT = 1920
 const PLAYER_Y_POSITION = VIEWPORT_HEIGHT / 3  # Upper third
 
+@onready var japan: Sprite2D = $Player/japan
+@onready var mexican: Sprite2D = $Player/mexican
+@onready var anon: Sprite2D = $Player/anon
+@onready var african: Sprite2D = $Player/african
+
+
 # Scrolling configuration
-const SCROLL_SPEED = 100.0  # Pixels per second
+const SCROLL_SPEED = 10.0  # Pixels per second
 
 # Enemy spawn configuration
 var spawn_interval = 2.0  # Start with 3 seconds
@@ -25,6 +31,7 @@ var current_enemy = null
 var time_since_last_spawn = 0.0
 var current_ability = 4 # Default ability 4 (white)
 var max_enemy_size = 150.0
+
 
 @onready var ability_switch_sound_effect = [
 	preload("res://assets/sounds/mask_switch_africa.wav"),
@@ -54,6 +61,7 @@ var ability_config = {
 @onready var game_over_screen = $CanvasLayer/GameOverScreen
 @onready var ability_label = $CanvasLayer/AbilityLabel
 
+
 #-------------------------------------------------------------------------------
 # Game Loop
 #-------------------------------------------------------------------------------
@@ -62,17 +70,23 @@ func _ready():
 	update_ability_display()
 	init_player()
 	set_chaser_position()
-
+	japan.visible = false
+	african.visible = false
+	mexican.visible = false
+	anon.visible = true
+	
+	
+var mat: ShaderMaterial
 func _process(delta):
 	if game_over:
 		if Input.is_action_just_pressed("ui_accept"):
 			restart_game()
 		return
-
 	update_background(delta)
 
+
 	# Handle ability switching
-	for i in range(1, 6):
+	for i in range(1, 4):
 		if Input.is_action_just_pressed("ability_%d" % i):
 			current_ability = i
 			playAbilitySwitchSound()
@@ -125,7 +139,9 @@ func update_background(delta):
 func trigger_game_over():
 	game_over = true
 	game_over_screen.visible = true
-	$GameOverSound.play()
+	$EatSound.play()
+	$DeathSound.play()
+	
 	
 
 func restart_game():
@@ -219,13 +235,31 @@ func playAbilitySwitchSound():
 	var ability_name = ability_config[current_ability]["name"]
 	if ability_name == "Red":
 		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(0)
+		japan.visible = false
+		african.visible = true
+		mexican.visible = false
+		anon.visible = false
 		$AbilitySwitchSound.play()
 	elif ability_name == "Blue":
 		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(1)
 		$AbilitySwitchSound.play()
+		japan.visible = true
+		african.visible = false
+		mexican.visible = false
+		anon.visible = false
 	elif ability_name == "Green":
 		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(2)
 		$AbilitySwitchSound.play()
+		japan.visible = false
+		african.visible = false
+		mexican.visible = true
+		anon.visible = false
+	else: 
+		japan.visible = false
+		african.visible = false
+		mexican.visible = false
+		anon.visible = true
+		
 		
 			
 
@@ -234,7 +268,7 @@ func update_player_color():
 	player.current_color = ability_config[current_ability]["color"]
 	player.queue_redraw()
 
-func does_player_win(enemy_type: int) -> bool:
+func does_player_win(_enemy_type: int) -> bool:
 	# Check if current ability wins against the given enemy type
 	# return enemy_type in ability_config[current_ability]["wins_against"]
 	return false
