@@ -16,6 +16,24 @@ var current_type = 4
 @export var ability_2_fire_rate := 20.0  # shots per second
 var time_since_last_shot := 0.0
 
+@onready var player_sprite: Sprite2D = $bob
+@onready var player_japan: Sprite2D = $japan
+@onready var player_africa: Sprite2D = $african
+@onready var player_mexico: Sprite2D = $mexican
+
+
+@onready var idle_texture_bob: Texture2D = preload("res://assets/images/bob.png")
+@onready var shoot_texture_bob: Texture2D = preload("res://assets/images/evil_bob_.png")
+
+@onready var idle_texture_japan: Texture2D = preload("res://assets/images/oni_mask_evil.png")
+@onready var shoot_texture_japan: Texture2D = preload("res://assets/images/oni_mask_evil_evil.png")
+
+@onready var idle_texture_mexico: Texture2D = preload("res://assets/images/mexican_mask.png")
+@onready var shoot_texture_mexico: Texture2D = preload("res://assets/images/mexican_mask_evil.png")
+
+@onready var idle_texture_africa: Texture2D = preload("res://assets/images/african_mask_2.png")
+@onready var shoot_texture_africa: Texture2D = preload("res://assets/images/african_mask_evil.png")
+
 # Drag force from enemies
 var drag_force = Vector2.ZERO
 
@@ -100,6 +118,29 @@ func _physics_process(delta):
 	# Reset drag force each frame (will be re-applied by colliding enemies)
 	drag_force = Vector2.ZERO
 	
+var is_shooting := false
+
+func change_to_shoot_sprite():
+	if is_shooting:
+		return
+
+	is_shooting = true
+	player_sprite.texture = shoot_texture_bob
+	player_africa.texture = shoot_texture_africa
+	player_japan.texture = shoot_texture_japan
+	player_mexico.texture = shoot_texture_mexico
+
+	await get_tree().create_timer(0.1).timeout
+
+	player_sprite.texture = idle_texture_bob
+	player_africa.texture = idle_texture_africa
+	player_japan.texture = idle_texture_japan
+	player_mexico.texture = idle_texture_mexico
+	
+	is_shooting = false
+
+
+	
 func shoot_shotgun(): 
 	for i in pellet_count:
 		var bullet = bullet_scene.instantiate()
@@ -112,6 +153,7 @@ func shoot_shotgun():
 		
 		bullet.velocity = direction * bullet_speed
 		get_parent().add_child(bullet)
+	change_to_shoot_sprite()
 	$ShootSound.stream = shoot_sounds_shotgun.pick_random()
 	$ShootSound.play()
 
@@ -120,6 +162,7 @@ func shoot_bullet():
 	bullet.position = position
 	bullet.connect("bullet_hit_enemy", Callable(get_parent(), "_on_bullet_hit_enemy"))
 	get_parent().add_child(bullet)
+	change_to_shoot_sprite()
 	$ShootSound.stream = shoot_sounds_pistole.pick_random()
 	$ShootSound.play()
 
