@@ -181,12 +181,14 @@ func update_player_color():
 
 func does_player_win(enemy_type: int) -> bool:
 	# Check if current ability wins against the given enemy type
-	return enemy_type in ability_config[current_ability]["wins_against"]
+	# return enemy_type in ability_config[current_ability]["wins_against"]
+	return false
 
 func _on_bullet_hit_enemy(enemy):
 	if enemy and is_instance_valid(enemy):
-		enemy.shrink()
-
+		var enemy_type = enemy.enemy_type 
+		if enemy_type in ability_config[current_ability]["wins_against"]:
+			enemy.shrink()
 
 func _draw():
 	# Draw scrolling background pattern

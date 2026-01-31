@@ -7,7 +7,7 @@ var move_speed = 120.0
 
 # Enemy size configuration - 85% of screen width (1080 * 0.85 = 918)
 const ENEMY_SIZE = 918.0
-const SHRINK_RATE = 50.0  # Pixels to shrink per bullet hit
+const SHRINK_RATE = 20.0  # Pixels to shrink per bullet hit
 
 var current_size = ENEMY_SIZE
 
