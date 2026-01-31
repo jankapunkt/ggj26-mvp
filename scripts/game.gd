@@ -55,6 +55,18 @@ var ability_config = {
 	4: {"color": Color(1.0, 1.0, 1.0, 0.1), "name": "White", "wins_against": [1,2, 3], "shrink": 10}
 }
 
+# Gauge system configuration
+const MAX_GAUGE = 100.0
+const GAUGE_DECREASE_PER_BULLET = 10.0
+const GAUGE_REFILL_RATE = 20.0  # Units per second when White ability is active
+
+# Gauge tracking for abilities 1-3 (Red, Green, Blue)
+var ability_gauges = {
+	1: MAX_GAUGE,  # Red
+	2: MAX_GAUGE,  # Green
+	3: MAX_GAUGE   # Blue
+}
+
 # Node references
 @onready var player = $Player
 @onready var chaser = $Chaser
@@ -120,6 +132,10 @@ func _process(delta):
 	# to apply drag forces
 	for enemy in enemies:
 		check_collision_with_enemy(enemy)
+	
+	# Handle gauge refill when White ability (4) is active
+	if current_ability == 4:
+		refill_gauges(delta)
 	
 	# Handle enemy spawning
 	time_since_last_spawn += delta
@@ -280,6 +296,36 @@ func _on_bullet_hit_enemy(enemy):
 		var enemy_type = enemy.enemy_type 
 		if enemy_type in ability_config[current_ability]["wins_against"]:
 			enemy.shrink(ability_config[current_ability]["shrink"])
+
+#-------------------------------------------------------------------------------
+# Gauge System
+#-------------------------------------------------------------------------------
+
+func refill_gauges(delta):
+	"""Refill all ability gauges when White ability is active"""
+	for ability_id in ability_gauges.keys():
+		ability_gauges[ability_id] = min(ability_gauges[ability_id] + GAUGE_REFILL_RATE * delta, MAX_GAUGE)
+
+func can_shoot() -> bool:
+	"""Check if the current ability has enough gauge to shoot"""
+	# White ability (4) has no gauge limitation
+	if current_ability == 4:
+		return true
+	# Abilities 1-3 require sufficient gauge
+	if current_ability in ability_gauges:
+		return ability_gauges[current_ability] >= GAUGE_DECREASE_PER_BULLET
+	return false
+
+func consume_gauge():
+	"""Decrease gauge for current ability after shooting"""
+	if current_ability in ability_gauges:
+		ability_gauges[current_ability] = max(0, ability_gauges[current_ability] - GAUGE_DECREASE_PER_BULLET)
+
+func get_gauge_percentage(ability_id: int) -> float:
+	"""Get the gauge level as a percentage (0.0 to 1.0)"""
+	if ability_id in ability_gauges:
+		return ability_gauges[ability_id] / MAX_GAUGE
+	return 1.0  # White ability always returns full
 
 'func _draw():
 	# Draw scrolling background pattern

@@ -30,7 +30,12 @@ func _ready():
 func _physics_process(delta):
 	# Handle shooting
 	if Input.is_action_just_pressed("shoot"):
-		shoot_shotgun()
+		# Check if we can shoot (gauge available)
+		if get_parent().has_method("can_shoot") and get_parent().can_shoot():
+			shoot_shotgun()
+			# Consume gauge after shooting
+			if get_parent().has_method("consume_gauge"):
+				get_parent().consume_gauge()
 	
 	# Get input direction for horizontal movement
 	var direction_x = Input.get_axis("move_left", "move_right")
