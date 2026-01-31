@@ -55,7 +55,6 @@ func shoot_bullet():
 	bullet.position = position
 	bullet.connect("bullet_hit_enemy", Callable(get_parent(), "_on_bullet_hit_enemy"))
 	get_parent().add_child(bullet)
-	bullet.queue_redraw()
 
 func _draw():
 	# Draw player as a circle with current ability color

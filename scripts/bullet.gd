@@ -4,6 +4,7 @@ signal bullet_hit_enemy(enemy)
 
 const BULLET_SPEED = 600.0
 const BULLET_RADIUS = 10.0
+const VIEWPORT_HEIGHT = 1920
 
 func _ready():
 	connect("area_entered", Callable(self, "_on_area_entered"))
@@ -13,7 +14,7 @@ func _process(delta):
 	position.y += BULLET_SPEED * delta
 	
 	# Remove bullet if it goes off screen
-	if position.y > 2000:
+	if position.y > VIEWPORT_HEIGHT + 100:
 		queue_free()
 
 func _on_area_entered(area):
