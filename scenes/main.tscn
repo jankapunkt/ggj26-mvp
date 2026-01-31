@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c2ghxvmwlgpsy"]
+[gd_scene load_steps=13 format=3 uid="uid://c2ghxvmwlgpsy"]
 
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
@@ -12,6 +12,9 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_85g3d"]
+load_path = "res://.godot/imported/ronin_mask.png-9aad5388a3b57ffb9789898f87da5fd8.ctex"
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
 size = Vector2(2160, 380)
@@ -33,10 +36,15 @@ texture = ExtResource("2_tefeu")
 script = ExtResource("2_player")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+visible = false
 shape = SubResource("CircleShape2D_sugp2")
 
 [node name="ShootSound" type="AudioStreamPlayer" parent="Player"]
 stream = ExtResource("3_tbgi4")
+
+[node name="PlayerSprite" type="Sprite2D" parent="Player"]
+scale = Vector2(0.5, 0.5)
+texture = SubResource("CompressedTexture2D_85g3d")
 
 [node name="Chaser" type="Area2D" parent="."]
 script = ExtResource("3_chaser")
