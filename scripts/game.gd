@@ -7,8 +7,9 @@ const PLAYER_Y_POSITION = VIEWPORT_HEIGHT / 3  # Upper third
 
 @onready var japan: Sprite2D = $Player/japan
 @onready var mexican: Sprite2D = $Player/mexican
-@onready var anon: Sprite2D = $Player/jason
+@onready var bob: Sprite2D = $Player/bob
 @onready var african: Sprite2D = $Player/african
+@onready var jason: Sprite2D = $Player/jason
 
 
 # Scrolling configuration
@@ -84,9 +85,10 @@ func _ready():
 	init_player()
 	set_chaser_position()
 	japan.visible = false
+	jason.visible = false
 	african.visible = false
 	mexican.visible = false
-	anon.visible = true
+	bob.visible = true
 
 func toggle_pause():
 	if game_over: return
@@ -272,7 +274,7 @@ func playAbilitySwitchSound():
 		japan.visible = false
 		african.visible = true
 		mexican.visible = false
-		anon.visible = false
+		bob.visible = true
 		$AbilitySwitchSound.play()
 	elif ability_name == "Blue":
 		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(1)
@@ -280,19 +282,19 @@ func playAbilitySwitchSound():
 		japan.visible = true
 		african.visible = false
 		mexican.visible = false
-		anon.visible = false
+		bob.visible = true
 	elif ability_name == "Green":
 		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(2)
 		$AbilitySwitchSound.play()
 		japan.visible = false
 		african.visible = false
 		mexican.visible = true
-		anon.visible = false
+		bob.visible = true
 	else: 
 		japan.visible = false
 		african.visible = false
 		mexican.visible = false
-		anon.visible = true
+		bob.visible = true
 		
 		
 			

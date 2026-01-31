@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://br7nag8x4a8ki"]
+[gd_scene load_steps=19 format=3 uid="uid://br7nag8x4a8ki"]
 
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
@@ -9,10 +9,12 @@
 [ext_resource type="Texture2D" uid="uid://bswyot5brppgp" path="res://assets/images/shadow.png" id="4_tbgi4"]
 [ext_resource type="Texture2D" uid="uid://c4hhnrv6yudl1" path="res://assets/images/ronin_mask.png" id="5_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://bjoqkgwws6ghc" path="res://assets/images/mexican_mask.png" id="6_a8y0u"]
+[ext_resource type="Texture2D" uid="uid://cuht6yfejts4a" path="res://assets/images/oni_mask.png" id="6_jbj1t"]
 [ext_resource type="AudioStream" uid="uid://cf631fc3mu73c" path="res://assets/sounds/mask_switch_africa.wav" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://de7ombaygtt8" path="res://assets/images/jason_mask.png" id="7_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://b2wikc65ch41q" path="res://assets/images/african_mask_2.png" id="8_a8y0u"]
 [ext_resource type="AudioStream" uid="uid://rjgooqxltxya" path="res://assets/sounds/gameover_sound.wav" id="9_85g3d"]
+[ext_resource type="Texture2D" uid="uid://dhlxlujpc25oj" path="res://assets/images/bob.png" id="9_jkv2x"]
 [ext_resource type="AudioStream" uid="uid://dx4eduwaav2he" path="res://assets/sounds/player_death.wav" id="10_choun"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
@@ -45,9 +47,13 @@ shape = SubResource("CircleShape2D_sugp2")
 [node name="ShootSound" type="AudioStreamPlayer" parent="Player"]
 stream = ExtResource("3_tbgi4")
 
+[node name="bob" type="Sprite2D" parent="Player"]
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("9_jkv2x")
+
 [node name="japan" type="Sprite2D" parent="Player"]
-scale = Vector2(0.5, 0.5)
-texture = ExtResource("5_a8y0u")
+scale = Vector2(0.55, 0.55)
+texture = ExtResource("6_jbj1t")
 
 [node name="mexican" type="Sprite2D" parent="Player"]
 scale = Vector2(0.5, 0.5)
@@ -58,7 +64,7 @@ scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_a8y0u")
 
 [node name="african" type="Sprite2D" parent="Player"]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.57, 0.57)
 texture = ExtResource("8_a8y0u")
 
 [node name="Chaser" type="Area2D" parent="."]
