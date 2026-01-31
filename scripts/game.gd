@@ -105,9 +105,8 @@ func check_collision_with_chaser(chaser):
 	if game_over:
 		return
 	var distance = player.position.distance_to(chaser.position)
-	print_debug(distance)
 	# Conservative collision threshold for large enemies
-	# Player radius (125) + enemy radius (~459) = (rounded up) 585
+	# Player radius (125) + chaser radius (~459) = (rounded up) 585
 	if distance <= 585:
 		# Player loses - game over
 		trigger_game_over()
@@ -159,16 +158,6 @@ func check_collision_with_enemy(enemy):
 				# Apply a strong drag force (300 units/sec)
 				var drag_strength = 300.0
 				player.drag_force = drag_direction * drag_strength
-
-func check_collision_with_chaser(chaser):
-	if game_over:
-		return
-	var distance = player.position.distance_to(chaser.position)
-	# Conservative collision threshold for large enemies
-	# Player radius (125) + chaser radius (~459) = (rounded up) 585
-	if distance <= 585:
-		# Player loses - game over
-		trigger_game_over()
 
 
 func get_enemy_color(enemy_type: int) -> Color:
