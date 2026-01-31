@@ -11,6 +11,12 @@ var current_color = Color(0.4, 0.9, 0.4, 1.0)
 # Drag force from enemies
 var drag_force = Vector2.ZERO
 
+@onready var shoot_sounds = [
+	preload("res://assets/sounds/Pew_1.wav"),
+	preload("res://assets/sounds/Pew_2.wav"),
+	preload("res://assets/sounds/Pew_3.wav")
+]
+
 # Bullet scene reference
 var bullet_scene = preload("res://scenes/bullet.tscn")
 
@@ -55,6 +61,8 @@ func shoot_bullet():
 	bullet.position = position
 	bullet.connect("bullet_hit_enemy", Callable(get_parent(), "_on_bullet_hit_enemy"))
 	get_parent().add_child(bullet)
+	$ShootSound.stream = shoot_sounds.pick_random()
+	$ShootSound.play()
 
 func _draw():
 	# Draw player as a circle with current ability color
