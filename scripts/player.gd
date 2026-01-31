@@ -11,10 +11,17 @@ var current_color = Color(0.4, 0.9, 0.4, 1.0)
 # Drag force from enemies
 var drag_force = Vector2.ZERO
 
+# Bullet scene reference
+var bullet_scene = preload("res://scenes/bullet.tscn")
+
 func _ready():
 	queue_redraw()
 
 func _physics_process(delta):
+	# Handle shooting
+	if Input.is_action_just_pressed("shoot"):
+		shoot_bullet()
+	
 	# Get input direction for horizontal movement
 	var direction_x = Input.get_axis("move_left", "move_right")
 	
@@ -42,6 +49,12 @@ func _physics_process(delta):
 	
 	# Reset drag force each frame (will be re-applied by colliding enemies)
 	drag_force = Vector2.ZERO
+
+func shoot_bullet():
+	var bullet = bullet_scene.instantiate()
+	bullet.position = position
+	bullet.connect("bullet_hit_enemy", Callable(get_parent(), "_on_bullet_hit_enemy"))
+	get_parent().add_child(bullet)
 
 func _draw():
 	# Draw player as a circle with current ability color

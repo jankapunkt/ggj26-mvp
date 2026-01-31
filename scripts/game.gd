@@ -139,8 +139,9 @@ func check_collision_with_enemy(enemy):
 	
 	var distance = player.position.distance_to(enemy.position)
 	# Conservative collision threshold for large enemies
-	# Player radius (125) + enemy radius (~459) = (rounded up) 585
-	if distance <= 585:
+	# Player radius (125) + enemy radius (current_size / 2) + small buffer
+	var collision_threshold = 125 + (enemy.current_size / 2) + 10
+	if distance <= collision_threshold:
 		# Check if player's ability wins against this enemy
 		if does_player_win(enemy.enemy_type):
 			# Player wins - remove enemy, player survives
@@ -181,6 +182,10 @@ func update_player_color():
 func does_player_win(enemy_type: int) -> bool:
 	# Check if current ability wins against the given enemy type
 	return enemy_type in ability_config[current_ability]["wins_against"]
+
+func _on_bullet_hit_enemy(enemy):
+	if enemy and is_instance_valid(enemy):
+		enemy.shrink()
 
 
 func _draw():

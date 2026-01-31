@@ -7,9 +7,15 @@ var move_speed = 120.0
 
 # Enemy size configuration - 85% of screen width (1080 * 0.85 = 918)
 const ENEMY_SIZE = 918.0
+const SHRINK_RATE = 50.0  # Pixels to shrink per bullet hit
+
+var current_size = ENEMY_SIZE
+
+@onready var collision_shape = $CollisionShape2D
 
 func _ready():
 	# connect("body_entered", Callable(self, "_on_body_entered"))
+	add_to_group("enemy")
 	pass
 
 func _process(delta):
@@ -54,6 +60,17 @@ func get_enemy_color() -> Color:
 		_: return Color.WHITE
 
 func draw_circle_enemy(base_color: Color):
-	var radius = ENEMY_SIZE / 2
+	var radius = current_size / 2
 	draw_circle(Vector2.ZERO, radius, base_color)
 	draw_arc(Vector2.ZERO, radius, 0, TAU, 32, base_color.lightened(0.2), 2.0)
+
+func shrink():
+	current_size -= SHRINK_RATE
+	if current_size <= 0:
+		emit_signal("enemy_destroyed")
+		queue_free()
+	else:
+		# Update collision shape radius
+		if collision_shape and collision_shape.shape:
+			collision_shape.shape.radius = current_size / 2
+	queue_redraw()
