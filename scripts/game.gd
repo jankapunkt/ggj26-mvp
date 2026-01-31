@@ -9,7 +9,7 @@ const PLAYER_Y_POSITION = VIEWPORT_HEIGHT / 3  # Upper third
 const SCROLL_SPEED = 100.0  # Pixels per second
 
 # Enemy spawn configuration
-var spawn_interval = 5.0  # Start with 3 seconds
+var spawn_interval = 2.0  # Start with 3 seconds
 var min_spawn_interval = 0.5  # Minimum 0.5 seconds
 var spawn_decrease_rate = 0.1  # Decrease by 0.1 seconds each spawn
 
@@ -176,10 +176,10 @@ func spawn_enemy():
 
 func _on_enemy_destroyed(enemy):
 	print_debug("on enemy destroyed", enemy)
-	max_enemy_size += 700
+	max_enemy_size += 5
 	if enemy in enemies:
 		enemies.erase(enemy)
-
+ 
 func check_collision_with_enemy(enemy):
 	if game_over or enemy == null:
 		return

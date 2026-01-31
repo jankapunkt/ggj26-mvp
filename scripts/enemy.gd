@@ -16,6 +16,7 @@ var current_size = MIN_ENEMY_SIZE
 @onready var collision_shape = $CollisionShape2D
 
 func _ready():
+	position.x = randi_range(0, 1080)
 	add_to_group("enemy")
 
 func init(max_size):
