@@ -63,25 +63,7 @@ func _draw():
 		# Determine if this ability is selected or wins against current enemy
 		var is_selected = (i == current_ability)
 		var alpha = 0.9 if is_selected else 0.25
-		var wins_against_enemy = false
 		
-		if current_enemy_type > 0:
-			wins_against_enemy = current_enemy_type in parent_game_controller.ability_config[i]["wins_against"]
-		
-		# Draw the circle with gauge indicator
-		if wins_against_enemy:
-			# Winning ability: draw with pulsing glow effect
-			# Use modulo to prevent float precision issues in long-running games
-			var time_ms = Time.get_ticks_msec() % 6283  # 2π * 1000
-			var pulse_scale = 1.0 + sin(time_ms * PULSE_SPEED) * PULSE_INTENSITY
-			# draw_circle(circle_pos, CIRCLE_RADIUS * pulse_scale, ability_color.lightened(0.5))
-			draw_circle(circle_pos, CIRCLE_RADIUS, ability_color)
-			# Add extra bright outline to make it clear
-			draw_arc(circle_pos, CIRCLE_RADIUS + 6, 0, TAU, 32, Color.WHITE, 3.0)
-		else:
-			# Normal ability: draw with dimmed colors
-			draw_circle(circle_pos, CIRCLE_RADIUS, ability_color.darkened(0.4))
-			draw_circle(circle_pos, CIRCLE_RADIUS - 2, ability_color.darkened(0.6))
 		
 		# Draw gauge indicator as a filled arc around the circle
 		if gauge_percentage < 0.95:  # Only show gauge indicator when meaningfully depleted

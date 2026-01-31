@@ -12,10 +12,6 @@ var current_type = 4
 @export var spread_angle := 30.0  # degrees
 @export var bullet_speed := 600.0
 
-# Rapid fire settings for Ability 2
-@export var ability_2_fire_rate := 20.0  # shots per second
-var time_since_last_shot := 0.0
-
 @onready var player_sprite: Sprite2D = $bob
 @onready var player_japan: Sprite2D = $japan
 @onready var player_africa: Sprite2D = $african
@@ -33,6 +29,7 @@ var time_since_last_shot := 0.0
 
 @onready var idle_texture_africa: Texture2D = preload("res://assets/images/african_mask_2.png")
 @onready var shoot_texture_africa: Texture2D = preload("res://assets/images/african_mask_evil.png")
+
 
 # Drag force from enemies
 var drag_force = Vector2.ZERO
@@ -56,39 +53,19 @@ func _ready():
 	queue_redraw()
 
 func _physics_process(delta):
-	# Update time since last shot (for throttling)
-	time_since_last_shot += delta
-	
 	# Handle shooting
-	var shoot_pressed = Input.is_action_pressed("shoot")
-	var can_shoot_now = false
-	
-	# For Ability 1 (RED), allow rapid fire by holding space
-	if current_type == 1:
-		# Calculate fire interval based on fire rate
-		var fire_interval = 1.0 / ability_2_fire_rate
-		# Check if enough time has passed since last shot
-		if shoot_pressed and time_since_last_shot >= fire_interval:
-			can_shoot_now = true
-	else:
-		# For other abilities, use single shot (just pressed)
-		if Input.is_action_just_pressed("shoot"):
-			can_shoot_now = true
-	
-	if can_shoot_now:
+	if Input.is_action_just_pressed("shoot"):
 		# Check if we can shoot (gauge available)
 		if get_parent().has_method("can_shoot") and get_parent().can_shoot():
 			match current_type:
-				1: shoot_bullet()
+				1: shoot_shotgun()
 				2: shoot_shotgun()
 				3: shoot_shotgun()
 				4: shoot_bullet()
-				_: shoot_bullet()
+				_: shoot_shotgun()
 			# Consume gauge after shooting
 			if get_parent().has_method("consume_gauge"):
 				get_parent().consume_gauge()
-			# Reset the timer after shooting
-			time_since_last_shot = 0.0
 	
 	# Get input direction for horizontal movement
 	var direction_x = Input.get_axis("move_left", "move_right")
@@ -166,7 +143,7 @@ func shoot_bullet():
 	$ShootSound.stream = shoot_sounds_pistole.pick_random()
 	$ShootSound.play()
 
-func _draw():
+# func _draw():
 	# Draw player as a circle with current ability color
-	draw_circle(Vector2.ZERO, RADIUS, current_color.darkened(0.3))
-	draw_circle(Vector2.ZERO, RADIUS, current_color)
+	# draw_circle(Vector2.ZERO, RADIUS, current_color.darkened(0.3))
+	# draw_circle(Vector2.ZERO, RADIUS, current_color)
