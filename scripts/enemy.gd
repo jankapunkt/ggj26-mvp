@@ -71,7 +71,7 @@ func shrink(rate):
 	current_size -= rate
 	if current_size <= KILL_SIZE:
 		print_debug("enemy destroyed dispatch")
-		emit_signal("enemy_destroyed")
+		emit_signal("enemy_destroyed", self)
 		queue_free()
 	else:
 		# Update collision shape radius
