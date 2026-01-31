@@ -78,6 +78,7 @@ var ability_gauges = {
 # Game Loop
 #-------------------------------------------------------------------------------
 func _ready():
+	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	game_over_screen.visible = false
 	update_ability_display()
 	init_player()
@@ -86,10 +87,20 @@ func _ready():
 	african.visible = false
 	mexican.visible = false
 	anon.visible = true
+
+func toggle_pause():
+	if game_over: return
 	
+	var is_paused = !get_tree().paused
+	get_tree().paused = is_paused
 	
 var mat: ShaderMaterial
 func _process(delta):
+	if Input.is_action_just_pressed("ui_cancel"):
+		toggle_pause()
+		
+	if get_tree().paused: 
+		return
 	if game_over:
 		if Input.is_action_just_pressed("ui_accept"):
 			restart_game()
@@ -199,7 +210,9 @@ func spawn_enemy():
 	# Random enemy type (1-5)
 	var enemy_type = randi() % 3 + 1
 	var enemy = preload("res://scenes/enemy.tscn").instantiate()
-	enemy.init(max_enemy_size)
+	enemy.init(max_enemy_size) 
+	
+	enemy.process_mode = Node.PROCESS_MODE_PAUSABLE
 	# Spawn centered horizontally at bottom of screen
 	enemy.position = Vector2(VIEWPORT_WIDTH / 2, VIEWPORT_HEIGHT + 50)
 	enemy.enemy_type = enemy_type
