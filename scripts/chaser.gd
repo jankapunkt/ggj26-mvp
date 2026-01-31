@@ -1,7 +1,13 @@
-extends Node2D
+extends Area2D
 
 func _ready():
+	connect("body_entered", Callable(self, "_on_body_entered"))
 	queue_redraw()
+
+func _on_body_entered(body):
+	if body.is_in_group("player"):
+		# Notify game controller of collision with chaser
+		get_parent().check_collision_with_chaser()
 
 func _draw():
 	# Draw elliptic shape (elongated vertically)

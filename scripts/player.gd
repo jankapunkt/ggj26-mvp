@@ -8,6 +8,9 @@ const RADIUS = 125
 # Current player color (updated by game controller based on ability)
 var current_color = Color(0.4, 0.9, 0.4, 1.0)
 
+# Drag force from enemies
+var drag_force = Vector2.ZERO
+
 func _ready():
 	queue_redraw()
 
@@ -28,11 +31,17 @@ func _physics_process(delta):
 	else:
 		velocity.y = move_toward(velocity.y, 0, SPEED)
 	
+	# Apply drag force from enemies (this pulls player toward chaser)
+	velocity += drag_force * delta
+	
 	# Keep player within bounds
 	position.x = clamp(position.x, RADIUS + 10, VIEWPORT_WIDTH - (RADIUS + 10))
 	position.y = clamp(position.y, RADIUS + 10, VIEWPORT_HEIGHT - (RADIUS + 10))
 	
 	move_and_slide()
+	
+	# Reset drag force each frame (will be re-applied by colliding enemies)
+	drag_force = Vector2.ZERO
 
 func _draw():
 	# Draw player as a circle with current ability color

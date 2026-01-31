@@ -129,8 +129,18 @@ func check_collision_with_enemy(enemy):
 			enemy.emit_signal("enemy_destroyed")
 			enemy.queue_free()
 		else:
-			# Player loses - game over
-			trigger_game_over()
+			# Player doesn't win - apply drag force towards chaser
+			# Calculate direction from player to chaser (upward, toward top of screen)
+			var drag_direction = (chaser.position - player.position).normalized()
+			# Apply a strong drag force (300 units/sec)
+			var drag_strength = 300.0
+			player.drag_force = drag_direction * drag_strength
+
+func check_collision_with_chaser():
+	if game_over:
+		return
+	# Player collided with chaser - game over
+	trigger_game_over()
 
 
 func get_enemy_color(enemy_type: int) -> Color:

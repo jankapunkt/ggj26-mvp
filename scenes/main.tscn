@@ -8,6 +8,9 @@
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
+size = Vector2(2160, 100)
+
 [node name="Game" type="Node2D" unique_id=674499132]
 script = ExtResource("1_main")
 
@@ -17,8 +20,11 @@ script = ExtResource("2_player")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1273362723]
 shape = SubResource("CircleShape2D_sugp2")
 
-[node name="Chaser" type="Node2D" parent="." unique_id=1613410077]
+[node name="Chaser" type="Area2D" parent="." unique_id=1613410077]
 script = ExtResource("3_chaser")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser"]
+shape = SubResource("RectangleShape2D_chaser")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=825830947]
 
