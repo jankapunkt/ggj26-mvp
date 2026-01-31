@@ -125,6 +125,8 @@ func update_background(delta):
 func trigger_game_over():
 	game_over = true
 	game_over_screen.visible = true
+	$GameOverSound.play()
+	
 
 func restart_game():
 	get_tree().reload_current_scene()
