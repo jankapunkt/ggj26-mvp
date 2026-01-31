@@ -1,13 +1,13 @@
-[gd_scene load_steps=17 format=3 uid="uid://br7nag8x4a8ki"]
+[gd_scene format=3 uid="uid://br7nag8x4a8ki"]
 
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
-[ext_resource type="Texture2D" uid="uid://7p1dfo23imhr" path="res://assets/images/background.jpeg" id="2_tefeu"]
+[ext_resource type="Texture2D" uid="uid://euvlxbrr3870" path="res://assets/images/background.jpeg" id="2_tefeu"]
 [ext_resource type="Script" uid="uid://d4i8t72v8v56x" path="res://scripts/chaser.gd" id="3_chaser"]
 [ext_resource type="AudioStream" uid="uid://drtc84d7wcx5l" path="res://assets/sounds/weapons/pistole/Pew_1.wav" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://fq6atjqhrsu0" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
-[ext_resource type="Texture2D" uid="uid://bswyot5brppgp" path="res://assets/images/shadow.png" id="4_tbgi4"]
-[ext_resource type="Texture2D" uid="uid://c4hhnrv6yudl1" path="res://assets/images/ronin_mask.png" id="5_a8y0u"]
+[ext_resource type="Texture2D" uid="uid://dmakwjstr6ihr" path="res://assets/images/shadow.png" id="4_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://67e1vyx8gs5k" path="res://assets/images/ronin_mask.png" id="5_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://bjoqkgwws6ghc" path="res://assets/images/mexican_mask.png" id="6_a8y0u"]
 [ext_resource type="AudioStream" uid="uid://cf631fc3mu73c" path="res://assets/sounds/mask_switch_africa.wav" id="6_tefeu"]
 [ext_resource type="Texture2D" uid="uid://de7ombaygtt8" path="res://assets/images/jason_mask.png" id="7_a8y0u"]
@@ -21,58 +21,58 @@ radius = 125.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
 size = Vector2(2160, 380)
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=1118020611]
 script = ExtResource("1_main")
 
-[node name="Sprite2D_A" type="Sprite2D" parent="."]
+[node name="Sprite2D_A" type="Sprite2D" parent="." unique_id=768613985]
 position = Vector2(540, 0)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_tefeu")
 
-[node name="Sprite2D_B" type="Sprite2D" parent="."]
+[node name="Sprite2D_B" type="Sprite2D" parent="." unique_id=1218166865]
 position = Vector2(540, 1920)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_tefeu")
 
-[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=845132450 groups=["player"]]
 script = ExtResource("2_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=632760406]
 visible = false
 shape = SubResource("CircleShape2D_sugp2")
 
-[node name="ShootSound" type="AudioStreamPlayer" parent="Player"]
+[node name="ShootSound" type="AudioStreamPlayer" parent="Player" unique_id=2137379952]
 stream = ExtResource("3_tbgi4")
 
-[node name="japan" type="Sprite2D" parent="Player"]
+[node name="japan" type="Sprite2D" parent="Player" unique_id=866922379]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_a8y0u")
 
-[node name="mexican" type="Sprite2D" parent="Player"]
+[node name="mexican" type="Sprite2D" parent="Player" unique_id=672974330]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_a8y0u")
 
-[node name="jason" type="Sprite2D" parent="Player"]
+[node name="jason" type="Sprite2D" parent="Player" unique_id=236075597]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_a8y0u")
 
-[node name="african" type="Sprite2D" parent="Player"]
+[node name="african" type="Sprite2D" parent="Player" unique_id=157191973]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_a8y0u")
 
-[node name="Chaser" type="Area2D" parent="."]
+[node name="Chaser" type="Area2D" parent="." unique_id=1327288533]
 script = ExtResource("3_chaser")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser" unique_id=1392475936]
 shape = SubResource("RectangleShape2D_chaser")
 
-[node name="Sprite2D" type="Sprite2D" parent="Chaser/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Chaser/CollisionShape2D" unique_id=832583235]
 texture = ExtResource("4_tbgi4")
 offset = Vector2(0, 100)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1489592787]
 
-[node name="GameOverScreen" type="Control" parent="CanvasLayer"]
+[node name="GameOverScreen" type="Control" parent="CanvasLayer" unique_id=390300153]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -80,7 +80,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen" unique_id=77807717]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -89,7 +89,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=143729480]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -108,7 +108,7 @@ text = "you dies"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=2046758957]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -126,7 +126,7 @@ text = "Press ENTER to restart"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AbilityLabel" type="Label" parent="CanvasLayer"]
+[node name="AbilityLabel" type="Label" parent="CanvasLayer" unique_id=1979852077]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 150.0
@@ -134,7 +134,7 @@ offset_bottom = 40.0
 theme_override_font_sizes/font_size = 20
 text = "Ability: 1"
 
-[node name="ControlsLabel" type="Label" parent="CanvasLayer"]
+[node name="ControlsLabel" type="Label" parent="CanvasLayer" unique_id=1569880199]
 offset_left = 10.0
 offset_top = 40.0
 offset_right = 300.0
@@ -144,16 +144,16 @@ text = "A/D or Arrows: Move
 1-5: Switch Ability
 Space: Shoot"
 
-[node name="AbilityUI" type="Node2D" parent="CanvasLayer"]
+[node name="AbilityUI" type="Node2D" parent="CanvasLayer" unique_id=1100550745]
 script = ExtResource("4_ability_ui")
 
-[node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="."]
+[node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="." unique_id=486652668]
 stream = ExtResource("6_tefeu")
 
-[node name="EatSound" type="AudioStreamPlayer" parent="."]
+[node name="EatSound" type="AudioStreamPlayer" parent="." unique_id=542552818]
 stream = ExtResource("9_85g3d")
 pitch_scale = 0.8
 
-[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+[node name="DeathSound" type="AudioStreamPlayer" parent="." unique_id=1690428034]
 stream = ExtResource("10_choun")
 volume_db = -0.5

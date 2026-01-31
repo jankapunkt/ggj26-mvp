@@ -48,7 +48,7 @@ func _draw():
 		
 		# Determine if this ability is selected or wins against current enemy
 		var is_selected = (i == current_ability)
-		var alpha = 0.9 if is_selected else 0.1
+		var alpha = 0.9 if is_selected else 0.25
 		var wins_against_enemy = false
 		
 		if current_enemy_type > 0:
@@ -60,7 +60,7 @@ func _draw():
 			# Use modulo to prevent float precision issues in long-running games
 			var time_ms = Time.get_ticks_msec() % 6283  # 2π * 1000
 			var pulse_scale = 1.0 + sin(time_ms * PULSE_SPEED) * PULSE_INTENSITY
-			draw_circle(circle_pos, CIRCLE_RADIUS * pulse_scale, ability_color.lightened(0.5))
+			# draw_circle(circle_pos, CIRCLE_RADIUS * pulse_scale, ability_color.lightened(0.5))
 			draw_circle(circle_pos, CIRCLE_RADIUS, ability_color)
 			# Add extra bright outline to make it clear
 			draw_arc(circle_pos, CIRCLE_RADIUS + 6, 0, TAU, 32, Color.WHITE, 3.0)

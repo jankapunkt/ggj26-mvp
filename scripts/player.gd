@@ -7,7 +7,7 @@ const RADIUS = 125
 
 # Current player color (updated by game controller based on ability)
 var current_color = Color(0.4, 0.9, 0.4, 1.0)
-
+var current_type = 4
 @export var pellet_count := 3
 @export var spread_angle := 30.0  # degrees
 @export var bullet_speed := 600.0
@@ -38,7 +38,12 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("shoot"):
 		# Check if we can shoot (gauge available)
 		if get_parent().has_method("can_shoot") and get_parent().can_shoot():
-			shoot_shotgun()
+			match current_type:
+				1: shoot_shotgun()
+				2: shoot_shotgun()
+				3: shoot_shotgun()
+				4: shoot_bullet()
+				_: shoot_shotgun()
 			# Consume gauge after shooting
 			if get_parent().has_method("consume_gauge"):
 				get_parent().consume_gauge()
