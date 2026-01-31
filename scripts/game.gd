@@ -24,6 +24,15 @@ var current_enemy = null
 var time_since_last_spawn = 0.0
 var current_ability = 4 # Default ability 1
 
+
+#Background
+@onready var bg_a: Sprite2D = $Sprite2D_A
+@onready var bg_b: Sprite2D = $Sprite2D_B
+
+const BG_SCROLL_SPEED = 200.0
+const BG_HEIGHT = 1920
+
+
 # Ability system configuration
 # Maps ability number to: [color, [enemies it wins against]]
 var ability_config = {
@@ -53,7 +62,9 @@ func _process(delta):
 		if Input.is_action_just_pressed("ui_accept"):
 			restart_game()
 		return
-	
+
+	update_background(delta)
+
 	# Handle ability switching
 	for i in range(1, 6):
 		if Input.is_action_just_pressed("ability_%d" % i):
@@ -78,6 +89,17 @@ func _process(delta):
 	if time_since_last_spawn >= spawn_interval and current_enemy == null:
 		spawn_enemy()
 		time_since_last_spawn = 0.0
+
+func update_background(delta):
+	bg_a.position.y += BG_SCROLL_SPEED * delta
+	bg_b.position.y += BG_SCROLL_SPEED * delta
+
+	# Looping
+	if bg_a.position.y >= BG_HEIGHT * 1.5:
+		bg_a.position.y = bg_b.position.y - BG_HEIGHT
+	if bg_b.position.y >= BG_HEIGHT * 1.5:
+		bg_b.position.y = bg_a.position.y - BG_HEIGHT
+
 
 func trigger_game_over():
 	game_over = true
@@ -188,7 +210,7 @@ func _on_bullet_hit_enemy(enemy):
 		if enemy_type in ability_config[current_ability]["wins_against"]:
 			enemy.shrink(ability_config[current_ability]["shrink"])
 
-func _draw():
+'func _draw():
 	# Draw scrolling background pattern
 	var tile_size = 100
 	var y_offset = int(scroll_offset) % tile_size
@@ -201,3 +223,4 @@ func _draw():
 			if (x + y) % 2 == 0:
 				color = Color(0.15, 0.15, 0.2, 1.0)
 			draw_rect(Rect2(pos_x, pos_y, tile_size - 2, tile_size - 2), color)
+'
