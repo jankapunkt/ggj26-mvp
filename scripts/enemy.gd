@@ -6,16 +6,23 @@ var enemy_type = 1
 var move_speed = 120.0
 
 # Enemy size configuration - 85% of screen width (1080 * 0.85 = 918)
-const ENEMY_SIZE = 918.0
+const MAX_ENEMY_SIZE = 700
+var max_enemy_size = 150.0
+const MIN_ENEMY_SIZE = 100.0
+const KILL_SIZE = 30
 
-var current_size = ENEMY_SIZE
+var current_size = MIN_ENEMY_SIZE
 
 @onready var collision_shape = $CollisionShape2D
 
 func _ready():
-	current_size = randi_range(100, ENEMY_SIZE)
-	move_speed = remap(current_size, 100, ENEMY_SIZE, 300, 120)
 	add_to_group("enemy")
+
+func init(max_size):
+	if max_size > MAX_ENEMY_SIZE:
+		max_size = MAX_ENEMY_SIZE
+	current_size = randi_range(MIN_ENEMY_SIZE, max_size)
+	move_speed = remap(current_size, MIN_ENEMY_SIZE, MAX_ENEMY_SIZE, 220, 80)
 
 func _process(delta):
 	# Move enemy upward (creating illusion of player moving down)
@@ -29,8 +36,7 @@ func _process(delta):
 		position.x += direction_to_player * horizontal_speed * delta
 	
 	# Check if enemy has moved off screen (top)
-	if position.y < -100:
-		emit_signal("enemy_destroyed")
+	if current_size <= KILL_SIZE:
 		queue_free()
 	
 	queue_redraw()
@@ -63,8 +69,9 @@ func draw_circle_enemy(base_color: Color):
 
 func shrink(rate):
 	current_size -= rate
-	if current_size <= 0:
-		emit_signal("enemy_destroyed")
+	if current_size <= KILL_SIZE:
+		print_debug("enemy destroyed dispatch")
+		emit_signal("enemy_destroyed", self)
 		queue_free()
 	else:
 		# Update collision shape radius

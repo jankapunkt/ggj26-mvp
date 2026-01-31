@@ -15,10 +15,11 @@ radius = 125.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
 size = Vector2(2160, 380)
 
-[node name="Game" type="Node2D"]
+[node name="Game" type="Node2D" unique_id=1702527848]
 script = ExtResource("1_main")
 
-[node name="Sprite2D_A" type="Sprite2D" parent="."]
+
+[node name="Sprite2D_A" type="Sprite2D" parent="." unique_id=1850269721]
 position = Vector2(540, 960)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_tefeu")
@@ -28,28 +29,29 @@ position = Vector2(540, -960)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_tefeu")
 
-[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1685461234 groups=["player"]]
 script = ExtResource("2_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=305573714]
 shape = SubResource("CircleShape2D_sugp2")
 
-[node name="ShootSound" type="AudioStreamPlayer" parent="Player"]
+[node name="ShootSound" type="AudioStreamPlayer" parent="Player" unique_id=1747696779]
 stream = ExtResource("3_tbgi4")
 
-[node name="Chaser" type="Area2D" parent="."]
+[node name="Chaser" type="Area2D" parent="." unique_id=895523788]
 script = ExtResource("3_chaser")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser" unique_id=942001831]
 shape = SubResource("RectangleShape2D_chaser")
 
-[node name="Sprite2D" type="Sprite2D" parent="Chaser/CollisionShape2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=1313577451]
+
+[node name="Sprite2D" type="Sprite2D" parent="Chaser/CollisionShape2D" unique_id=917540479]
 texture = ExtResource("4_tbgi4")
 offset = Vector2(0, 100)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-
-[node name="GameOverScreen" type="Control" parent="CanvasLayer"]
+[node name="GameOverScreen" type="Control" parent="CanvasLayer" unique_id=1661669908]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -57,7 +59,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen" unique_id=1126422741]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -66,7 +68,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=1774529273]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -85,7 +87,7 @@ text = "you dies"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=406893145]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -103,7 +105,7 @@ text = "Press ENTER to restart"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AbilityLabel" type="Label" parent="CanvasLayer"]
+[node name="AbilityLabel" type="Label" parent="CanvasLayer" unique_id=1162638675]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 150.0
@@ -111,7 +113,7 @@ offset_bottom = 40.0
 theme_override_font_sizes/font_size = 20
 text = "Ability: 1"
 
-[node name="ControlsLabel" type="Label" parent="CanvasLayer"]
+[node name="ControlsLabel" type="Label" parent="CanvasLayer" unique_id=1449802390]
 offset_left = 10.0
 offset_top = 40.0
 offset_right = 300.0
@@ -121,8 +123,8 @@ text = "A/D or Arrows: Move
 1-5: Switch Ability
 Space: Shoot"
 
-[node name="AbilityUI" type="Node2D" parent="CanvasLayer"]
+[node name="AbilityUI" type="Node2D" parent="CanvasLayer" unique_id=272025578]
 script = ExtResource("4_ability_ui")
 
-[node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="."]
+[node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="." unique_id=1729561683]
 stream = ExtResource("6_tefeu")
