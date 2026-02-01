@@ -30,27 +30,26 @@ Game prototypes for GGJ26. The main project is a vertical chase game. A Tetris p
 The Tetris prototype is located in the `tetris/` folder:
 - To play Tetris, open `tetris/project.godot` in Godot
 
-## Main Game - Vertical Chase Game
+## Masquerade - Vertical Chase Game
 
 A vertical scrolling game where you avoid enemies while being chased by an entity.
 
 ### Controls
 - **A / D or Arrow Keys**: Move left/right
-- **1-5**: Switch between abilities
+- **1-4**: Switch between abilities
 - **Enter**: Restart (when game over)
+- **Pause**: Pause and Resume Game
 
 ### Game Features
 
 - **9:16 Portrait viewport** (540x960)
 - **Player positioned in upper third** of screen
-- **Elliptic chase entity** that follows the player
+- **Shadow** that follows the player
 - **Infinite scrolling** - background moves upward creating downward movement illusion
-- **Three enemy types** (Triangle, Square, Hexagon)
 - **Random enemy spawning** with decreasing intervals
-- **One enemy at a time** on screen
-- **Collision detection** - touching enemy triggers game over
-- **5 Abilities** - player can switch between them (functions pending implementation)
-- **Game over screen** with "you dies" message
+- **Collision detection** - touching shadow triggers game over
+- **4 Abilities** - player can switch between them
+- **Game over screen** with "Game Over" message
 
 See [GAME_README.md](GAME_README.md) for detailed documentation.
 
