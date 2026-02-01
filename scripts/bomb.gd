@@ -3,7 +3,7 @@ extends Area2D
 # Bomb configuration
 const MAX_RADIUS = 350.0  # Maximum radius the bomb grows to
 const GROWTH_SPEED = 700.0  # Pixels per second growth rate
-const ENEMY_SHRINK_AMOUNT = 10000  # Amount to shrink enemy size (passed to enemy.shrink())
+const ENEMY_SHRINK_AMOUNT = 250  # Amount to shrink enemy size (passed to enemy.shrink())
 
 var current_radius = 0.0
 var enemies_hit = []  # Track which enemies have already been hit
@@ -33,6 +33,9 @@ func _on_area_entered(area):
 		# Shrink the enemy
 		if area.has_method("shrink"):
 			area.shrink(ENEMY_SHRINK_AMOUNT)
+			# Show damage text
+			if get_parent().has_method("show_damage_text"):
+				get_parent().show_damage_text(area.position, ENEMY_SHRINK_AMOUNT)
 
 func _draw():
 	# Draw expanding circle with semi-transparent blue color
