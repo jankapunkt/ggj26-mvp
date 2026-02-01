@@ -83,6 +83,7 @@ const GAUGE_DECREASE = {
 @onready var player = $Player
 @onready var chaser = $Chaser
 @onready var game_over_screen = $CanvasLayer/GameOverScreen
+@onready var pause_screen = $CanvasLayer/PauseScreen
 @onready var ability_label = $CanvasLayer/AbilityLabel
 
 
@@ -92,6 +93,7 @@ const GAUGE_DECREASE = {
 func _ready():
 	self.process_mode = Node.PROCESS_MODE_ALWAYS
 	game_over_screen.visible = false
+	pause_screen.visible = false
 	update_ability_display()
 	init_player()
 	set_chaser_position()
@@ -108,6 +110,7 @@ func toggle_pause():
 	
 	var is_paused = !get_tree().paused
 	get_tree().paused = is_paused
+	pause_screen.visible = is_paused
 	
 var mat: ShaderMaterial
 func _process(delta):
