@@ -177,7 +177,9 @@ func shoot_bullet():
 	$ShootSound.pitch_scale = 1
 	$ShootSound.stream = shoot_sounds_pistole.pick_random()
 	$ShootSound.play()
-	bullet.set_texture(0)
+	match current_type:
+		1: bullet.set_texture(1)
+		_: bullet.set_texture(0)
 	
 func shoot_bomb():
 	var bomb = bomb_scene.instantiate()

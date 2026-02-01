@@ -4,12 +4,11 @@
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bullet"]
 
-[node name="Bullet" type="Area2D" unique_id=1513837371 groups=["bullet"]]
+[node name="Bullet" type="Area2D" unique_id=34322813 groups=["bullet"]]
 script = ExtResource("1_bullet")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=61494425]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=934529276]
 shape = SubResource("CircleShape2D_bullet")
 
-[node name="BulletSprite" type="Sprite2D" parent="." unique_id=1565235469]
-rotation = 3.1415927
+[node name="BulletSprite" type="Sprite2D" parent="." unique_id=1150690658]
 scale = Vector2(0.2, 0.2)

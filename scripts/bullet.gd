@@ -26,5 +26,6 @@ func _on_area_entered(area):
 		queue_free()
 
 func set_texture(index: int):
-	if bullet_sprite != null:
+	print_debug("bullet text", index)
+	if bullet_sprite != null and bullet_sprite.texture != bullet_textures[index]:
 		bullet_sprite.texture = bullet_textures[index]
