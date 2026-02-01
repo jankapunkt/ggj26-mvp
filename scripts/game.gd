@@ -55,10 +55,10 @@ const BG_HEIGHT = 1920
 # Ability system configuration
 # Maps ability number to: [color, [enemies it wins against]]
 var ability_config = {
-	1: {"color": Color(1.0, 0.0, 0.0, 0.1), "name": "Red", "wins_against": [1, 2, 3], "shrink": 12},
-	2: {"color": Color(0.0, 1.0, 0.0, 0.1), "name": "Green", "wins_against": [1, 2, 3], "shrink": 75 },
-	3: {"color": Color(0.0, 0.0, 1.0, 0.1), "name": "Blue", "wins_against": [1, 2, 3], "shrink": 35 },
-	4: {"color": Color(1.0, 1.0, 1.0, 0.1), "name": "White", "wins_against": [1,2, 3], "shrink": 10}
+	1: {"color": Color(1.0, 0.0, 0.0, 0.1), "name": "Red", "wins_against": [1, 2, 3], "shrink": [9, 15]},
+	2: {"color": Color(0.0, 1.0, 0.0, 0.1), "name": "Green", "wins_against": [1, 2, 3], "shrink": [67,79] },
+	3: {"color": Color(0.0, 0.0, 1.0, 0.1), "name": "Blue", "wins_against": [1, 2, 3], "shrink": [35, 200] },
+	4: {"color": Color(1.0, 1.0, 1.0, 0.1), "name": "White", "wins_against": [1,2, 3], "shrink": [8, 13]}
 }
 
 # Gauge system configuration
@@ -363,7 +363,8 @@ func _on_bullet_hit_enemy(enemy):
 	if enemy and is_instance_valid(enemy):
 		var enemy_type = enemy.enemy_type
 		if enemy_type in ability_config[current_ability]["wins_against"]:
-			var damage_amount = ability_config[current_ability]["shrink"]
+			var shrink = ability_config[current_ability]["shrink"]
+			var damage_amount = randi_range(shrink[0], shrink[1])
 			enemy.shrink(damage_amount)
 			do_refill_gauge = true
 			# Increase score by 1 when bullet hits an enemy
