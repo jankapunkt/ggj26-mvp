@@ -255,13 +255,17 @@ func _on_enemy_destroyed(enemy):
 	max_enemy_size += 5
 	# Increase score by 5 when enemy is destroyed
 	current_score += 5
+	
+	# Store enemy position before removing it from the array
+	var enemy_pos = enemy.position
+	
 	if enemy in enemies:
 		enemies.erase(enemy)
 	
 	# Check if we should spawn a droppable
 	enemies_defeated_count += 1
 	if enemies_defeated_count >= next_droppable_at:
-		spawn_droppable(enemy.position)
+		spawn_droppable(enemy_pos)
 		# Set next droppable spawn at random interval (10-25 enemies)
 		next_droppable_at = enemies_defeated_count + randi_range(10, 25)
  
@@ -405,8 +409,8 @@ func get_gauge_percentage(ability_id: int) -> float:
 # Droppable System
 #-------------------------------------------------------------------------------
 
+# Spawn a droppable at the given position
 func spawn_droppable(position: Vector2):
-	"""Spawn a droppable at the given position"""
 	var droppable = preload("res://scenes/droppable.tscn").instantiate()
 	
 	# Randomly choose droppable type (0 = Yellow, 1 = Orange)
@@ -420,8 +424,8 @@ func spawn_droppable(position: Vector2):
 	droppables.append(droppable)
 	print_debug("Droppable spawned at position: ", position, " Type: ", type)
 
+# Check if player collides with a droppable
 func check_player_collision_with_droppable(droppable):
-	"""Check if player collides with a droppable"""
 	if game_over or droppable == null:
 		return
 	
@@ -432,8 +436,8 @@ func check_player_collision_with_droppable(droppable):
 	if distance <= collision_threshold:
 		_on_droppable_picked_up(droppable)
 
+# Handle droppable pickup by player
 func _on_droppable_picked_up(droppable):
-	"""Handle droppable pickup by player"""
 	if droppable == null or not is_instance_valid(droppable):
 		return
 	

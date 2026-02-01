@@ -42,7 +42,7 @@ func _on_player_pickup():
 	# Notify parent (game controller) about pickup
 	if get_parent().has_method("_on_droppable_picked_up"):
 		get_parent()._on_droppable_picked_up(self)
-	queue_free()
+	# Don't call queue_free() here - the game controller handles it
 
 func get_type() -> DroppableType:
 	return droppable_type
