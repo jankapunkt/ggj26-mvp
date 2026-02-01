@@ -1,13 +1,13 @@
-[gd_scene load_steps=19 format=3 uid="uid://br7nag8x4a8ki"]
+[gd_scene format=3 uid="uid://br7nag8x4a8ki"]
 
 [ext_resource type="Script" uid="uid://d3m0vwiiar26a" path="res://scripts/game.gd" id="1_main"]
 [ext_resource type="Script" uid="uid://77l6sve7drrm" path="res://scripts/player.gd" id="2_player"]
-[ext_resource type="Texture2D" uid="uid://7p1dfo23imhr" path="res://assets/images/background.jpeg" id="2_tefeu"]
+[ext_resource type="Texture2D" uid="uid://euvlxbrr3870" path="res://assets/images/background.jpeg" id="2_tefeu"]
 [ext_resource type="Script" uid="uid://d4i8t72v8v56x" path="res://scripts/chaser.gd" id="3_chaser"]
 [ext_resource type="AudioStream" uid="uid://drtc84d7wcx5l" path="res://assets/sounds/weapons/pistole/Pew_1.wav" id="3_tbgi4"]
 [ext_resource type="Script" uid="uid://fq6atjqhrsu0" path="res://scripts/ability_ui.gd" id="4_ability_ui"]
-[ext_resource type="Texture2D" uid="uid://bswyot5brppgp" path="res://assets/images/shadow.png" id="4_tbgi4"]
-[ext_resource type="Texture2D" uid="uid://c4hhnrv6yudl1" path="res://assets/images/ronin_mask.png" id="5_a8y0u"]
+[ext_resource type="Texture2D" uid="uid://dmakwjstr6ihr" path="res://assets/images/shadow.png" id="4_tbgi4"]
+[ext_resource type="Texture2D" uid="uid://67e1vyx8gs5k" path="res://assets/images/ronin_mask.png" id="5_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://bjoqkgwws6ghc" path="res://assets/images/mexican_mask.png" id="6_a8y0u"]
 [ext_resource type="Texture2D" uid="uid://fs335ak8il1u" path="res://assets/images/oni_mask_evil.png" id="6_jbj1t"]
 [ext_resource type="AudioStream" uid="uid://cf631fc3mu73c" path="res://assets/sounds/mask_switch_africa.wav" id="6_tefeu"]
@@ -16,6 +16,15 @@
 [ext_resource type="AudioStream" uid="uid://rjgooqxltxya" path="res://assets/sounds/gameover_sound.wav" id="9_85g3d"]
 [ext_resource type="Texture2D" uid="uid://dhlxlujpc25oj" path="res://assets/images/bob.png" id="9_jkv2x"]
 [ext_resource type="AudioStream" uid="uid://dx4eduwaav2he" path="res://assets/sounds/player_death.wav" id="10_choun"]
+[ext_resource type="Texture2D" uid="uid://d2hqos7jjo1ki" path="res://assets/images/shadow-frame1.png" id="12_og1vs"]
+[ext_resource type="Texture2D" uid="uid://csk5hwuvfnpmg" path="res://assets/images/shadow-frame2.png" id="13_2wyq8"]
+[ext_resource type="Texture2D" uid="uid://ddgkqwcsklofe" path="res://assets/images/shadow-frame3.png" id="14_vxglm"]
+[ext_resource type="Texture2D" uid="uid://c58okejixvece" path="res://assets/images/shadow-frame4.png" id="15_2f3dj"]
+[ext_resource type="Texture2D" uid="uid://1vvps2uck0t7" path="res://assets/images/shadow-frame5.png" id="16_yq6so"]
+[ext_resource type="Texture2D" uid="uid://nfqgyrc3w8el" path="res://assets/images/shadow-frame6.png" id="17_fv21b"]
+[ext_resource type="Texture2D" uid="uid://t1xju81f5mwh" path="res://assets/images/shadow-frame7.png" id="18_tel4y"]
+[ext_resource type="Texture2D" uid="uid://xritk2rm8l04" path="res://assets/images/shadow-frame8.png" id="19_qkpxi"]
+[ext_resource type="Script" uid="uid://dfodtfgxbvsy3" path="res://scenes/animated_sprite_2d.gd" id="20_5q0nq"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
@@ -23,63 +32,102 @@ radius = 125.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_chaser"]
 size = Vector2(2160, 380)
 
-[node name="Game" type="Node2D"]
+[sub_resource type="SpriteFrames" id="SpriteFrames_dgi5k"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("12_og1vs")
+}, {
+"duration": 1.0,
+"texture": ExtResource("13_2wyq8")
+}, {
+"duration": 1.0,
+"texture": ExtResource("14_vxglm")
+}, {
+"duration": 1.0,
+"texture": ExtResource("15_2f3dj")
+}, {
+"duration": 1.0,
+"texture": ExtResource("16_yq6so")
+}, {
+"duration": 1.0,
+"texture": ExtResource("17_fv21b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("18_tel4y")
+}, {
+"duration": 1.0,
+"texture": ExtResource("19_qkpxi")
+}],
+"loop": true,
+"name": &"idle",
+"speed": 30.0
+}]
+
+[node name="Game" type="Node2D" unique_id=2073805960]
 script = ExtResource("1_main")
 
-[node name="Sprite2D_A" type="Sprite2D" parent="."]
+[node name="Sprite2D_A" type="Sprite2D" parent="." unique_id=184557850]
 position = Vector2(540, 0)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_tefeu")
 
-[node name="Sprite2D_B" type="Sprite2D" parent="."]
+[node name="Sprite2D_B" type="Sprite2D" parent="." unique_id=1147149054]
 position = Vector2(540, 1920)
 scale = Vector2(2.5, 2.5)
 texture = ExtResource("2_tefeu")
 
-[node name="Player" type="CharacterBody2D" parent="." groups=["player"]]
+[node name="Player" type="CharacterBody2D" parent="." unique_id=1764681830 groups=["player"]]
 process_mode = 1
 script = ExtResource("2_player")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Player"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Player" unique_id=1061064028]
 visible = false
 shape = SubResource("CircleShape2D_sugp2")
 
-[node name="ShootSound" type="AudioStreamPlayer" parent="Player"]
+[node name="ShootSound" type="AudioStreamPlayer" parent="Player" unique_id=1187199888]
 stream = ExtResource("3_tbgi4")
 
-[node name="bob" type="Sprite2D" parent="Player"]
+[node name="bob" type="Sprite2D" parent="Player" unique_id=1016934720]
 scale = Vector2(0.55, 0.55)
 texture = ExtResource("9_jkv2x")
 
-[node name="japan" type="Sprite2D" parent="Player"]
+[node name="japan" type="Sprite2D" parent="Player" unique_id=875396175]
 scale = Vector2(0.55, 0.55)
 texture = ExtResource("6_jbj1t")
 
-[node name="mexican" type="Sprite2D" parent="Player"]
+[node name="mexican" type="Sprite2D" parent="Player" unique_id=907234444]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_a8y0u")
 
-[node name="jason" type="Sprite2D" parent="Player"]
+[node name="jason" type="Sprite2D" parent="Player" unique_id=1218366487]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_a8y0u")
 
-[node name="african" type="Sprite2D" parent="Player"]
+[node name="african" type="Sprite2D" parent="Player" unique_id=1397780947]
 scale = Vector2(0.57, 0.57)
 texture = ExtResource("8_a8y0u")
 
-[node name="Chaser" type="Area2D" parent="."]
+[node name="Chaser" type="Area2D" parent="." unique_id=1019613075]
 script = ExtResource("3_chaser")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Chaser" unique_id=2040881273]
 shape = SubResource("RectangleShape2D_chaser")
 
-[node name="Sprite2D" type="Sprite2D" parent="Chaser/CollisionShape2D"]
+[node name="Sprite2D" type="Sprite2D" parent="Chaser/CollisionShape2D" unique_id=552097631]
+visible = false
 texture = ExtResource("4_tbgi4")
 offset = Vector2(0, 100)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Chaser/CollisionShape2D" unique_id=218178542]
+sprite_frames = SubResource("SpriteFrames_dgi5k")
+animation = &"idle"
+offset = Vector2(0, 100)
+script = ExtResource("20_5q0nq")
 
-[node name="GameOverScreen" type="Control" parent="CanvasLayer"]
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=697212318]
+
+[node name="GameOverScreen" type="Control" parent="CanvasLayer" unique_id=512658797]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,7 +135,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen"]
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer/GameOverScreen" unique_id=1736564810]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -96,7 +144,7 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 0.8)
 
-[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="Label" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=1320133829]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -115,7 +163,7 @@ text = "you dies"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen"]
+[node name="RestartLabel" type="Label" parent="CanvasLayer/GameOverScreen" unique_id=364033810]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -133,7 +181,7 @@ text = "Press ENTER to restart"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="AbilityLabel" type="Label" parent="CanvasLayer"]
+[node name="AbilityLabel" type="Label" parent="CanvasLayer" unique_id=1627964520]
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 150.0
@@ -141,7 +189,7 @@ offset_bottom = 40.0
 theme_override_font_sizes/font_size = 20
 text = "Ability: 1"
 
-[node name="ControlsLabel" type="Label" parent="CanvasLayer"]
+[node name="ControlsLabel" type="Label" parent="CanvasLayer" unique_id=977829938]
 offset_left = 10.0
 offset_top = 40.0
 offset_right = 300.0
@@ -151,33 +199,33 @@ text = "A/D or Arrows: Move
 1-5: Switch Ability
 Space: Shoot"
 
-[node name="AbilityUI" type="Node2D" parent="CanvasLayer"]
+[node name="AbilityUI" type="Node2D" parent="CanvasLayer" unique_id=1603604810]
 script = ExtResource("4_ability_ui")
 
-[node name="japan" type="Sprite2D" parent="CanvasLayer/AbilityUI"]
+[node name="japan" type="Sprite2D" parent="CanvasLayer/AbilityUI" unique_id=151695291]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("5_a8y0u")
 
-[node name="mexican" type="Sprite2D" parent="CanvasLayer/AbilityUI"]
+[node name="mexican" type="Sprite2D" parent="CanvasLayer/AbilityUI" unique_id=1221187166]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("6_a8y0u")
 
-[node name="jason" type="Sprite2D" parent="CanvasLayer/AbilityUI"]
+[node name="jason" type="Sprite2D" parent="CanvasLayer/AbilityUI" unique_id=1780669545]
 visible = false
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("7_a8y0u")
 
-[node name="african" type="Sprite2D" parent="CanvasLayer/AbilityUI"]
+[node name="african" type="Sprite2D" parent="CanvasLayer/AbilityUI" unique_id=361775473]
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("8_a8y0u")
 
-[node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="."]
+[node name="AbilitySwitchSound" type="AudioStreamPlayer" parent="." unique_id=660083365]
 stream = ExtResource("6_tefeu")
 
-[node name="EatSound" type="AudioStreamPlayer" parent="."]
+[node name="EatSound" type="AudioStreamPlayer" parent="." unique_id=1036867619]
 stream = ExtResource("9_85g3d")
 pitch_scale = 0.8
 
-[node name="DeathSound" type="AudioStreamPlayer" parent="."]
+[node name="DeathSound" type="AudioStreamPlayer" parent="." unique_id=991570148]
 stream = ExtResource("10_choun")
 volume_db = -0.5
