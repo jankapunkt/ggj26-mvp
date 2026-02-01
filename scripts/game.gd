@@ -34,6 +34,11 @@ var current_ability = 4 # Default ability 4 (white)
 var max_enemy_size = 150.0
 var current_score = 0  # Score tracking
 
+# Droppable system
+var enemies_defeated_count = 0
+var next_droppable_at = 0  # Will be set to random value between 10-25
+var droppables = []  # Track active droppables
+
 @onready var ability_switch_sound_effect = [
 	preload("res://assets/sounds/mask_switch_africa.wav"),
 	preload("res://assets/sounds/mask_switch_japan.wav"),
@@ -95,6 +100,9 @@ func _ready():
 	african.visible = false
 	mexican.visible = false
 	bob.visible = true
+	# Initialize droppable spawn interval
+	randomize()
+	next_droppable_at = randi_range(10, 25)
 
 func toggle_pause():
 	if game_over: return
@@ -156,6 +164,10 @@ func _process(delta):
 	for enemy in enemies:
 		check_player_collision_with(enemy)
 		check_chaser_collision_with(enemy)
+	
+	# Check for droppable collisions
+	for droppable in droppables:
+		check_player_collision_with_droppable(droppable)
 	
 	# Handle gauge refill when White ability (4) is active
 	if do_refill_gauge:
@@ -246,6 +258,13 @@ func _on_enemy_destroyed(enemy):
 	current_score += 5
 	if enemy in enemies:
 		enemies.erase(enemy)
+	
+	# Check if we should spawn a droppable
+	enemies_defeated_count += 1
+	if enemies_defeated_count >= next_droppable_at:
+		spawn_droppable(enemy.position)
+		# Set next droppable spawn at random interval (10-25 enemies)
+		next_droppable_at = enemies_defeated_count + randi_range(10, 25)
  
 func check_player_collision_with(enemy):
 	if game_over or enemy == null:
@@ -382,6 +401,64 @@ func get_gauge_percentage(ability_id: int) -> float:
 	if ability_id in ability_gauges:
 		return ability_gauges[ability_id] / MAX_GAUGE
 	return 1.0  # White ability always returns full
+
+#-------------------------------------------------------------------------------
+# Droppable System
+#-------------------------------------------------------------------------------
+
+func spawn_droppable(position: Vector2):
+	"""Spawn a droppable at the given position"""
+	var droppable = preload("res://scenes/droppable.tscn").instantiate()
+	
+	# Randomly choose droppable type (0 = Yellow, 1 = Orange)
+	var type = randi() % 2
+	droppable.droppable_type = type
+	
+	droppable.position = position
+	droppable.process_mode = Node.PROCESS_MODE_PAUSABLE
+	
+	add_child(droppable)
+	droppables.append(droppable)
+	print_debug("Droppable spawned at position: ", position, " Type: ", type)
+
+func check_player_collision_with_droppable(droppable):
+	"""Check if player collides with a droppable"""
+	if game_over or droppable == null:
+		return
+	
+	var distance = player.position.distance_to(droppable.position)
+	# Player radius (125) + half droppable size (25) + small buffer
+	var collision_threshold = 125 + 25 + 10
+	
+	if distance <= collision_threshold:
+		_on_droppable_picked_up(droppable)
+
+func _on_droppable_picked_up(droppable):
+	"""Handle droppable pickup by player"""
+	if droppable == null or not is_instance_valid(droppable):
+		return
+	
+	var droppable_type = droppable.get_type()
+	
+	# Apply droppable effect
+	match droppable_type:
+		0:  # Yellow - shrink all current enemies by 5000
+			print_debug("Yellow droppable picked up - shrinking all enemies by 5000")
+			for enemy in enemies:
+				if enemy and is_instance_valid(enemy):
+					enemy.shrink(5000)
+		1:  # Orange - refill all gauges to maximum
+			print_debug("Orange droppable picked up - refilling all gauges")
+			for ability_id in ability_gauges.keys():
+				ability_gauges[ability_id] = MAX_GAUGE
+	
+	# Remove droppable from tracking
+	if droppable in droppables:
+		droppables.erase(droppable)
+	
+	# Queue droppable for deletion
+	if is_instance_valid(droppable):
+		droppable.queue_free()
 
 func show_damage_text(pos: Vector2, damage: float):
 	# Display damage text at the given position
