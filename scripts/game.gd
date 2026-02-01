@@ -83,8 +83,8 @@ const GAUGE_DECREASE = {
 @onready var player = $Player
 @onready var chaser = $Chaser
 @onready var game_over_screen = $CanvasLayer/GameOverScreen
+@onready var score_label = $CanvasLayer/GameOverScreen/ScoreLabel
 @onready var pause_screen = $CanvasLayer/PauseScreen
-@onready var ability_label = $CanvasLayer/AbilityLabel
 
 
 #-------------------------------------------------------------------------------
@@ -197,6 +197,7 @@ func update_background(delta):
 
 func trigger_game_over():
 	game_over = true
+	score_label.text = "Score: %d" % current_score
 	game_over_screen.visible = true
 	$EatSound.play()
 	$DeathSound.play()
