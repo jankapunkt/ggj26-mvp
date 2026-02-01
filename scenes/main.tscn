@@ -225,7 +225,7 @@ text = "PAUSED"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="ControlsLabel" type="Label" parent="CanvasLayer/PauseScreen" unique_id=1320133831]
+[node name="PauseControlsLabel" type="Label" parent="CanvasLayer/PauseScreen" unique_id=1320133831]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -244,7 +244,8 @@ text = "Controls:
 A/D or Arrow Keys: Move left/right
 W/S or Arrow Keys: Move up/down
 
-1-4 or Q/E: Switch Mask
+1-4: Select Ability
+Q/E: Cycle Ability
 Space: Shoot
 
 Escape: Resume"
