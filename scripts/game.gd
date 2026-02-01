@@ -32,6 +32,7 @@ var current_enemy = null
 var time_since_last_spawn = 0.0
 var current_ability = 4 # Default ability 4 (white)
 var max_enemy_size = 150.0
+var current_score = 0  # Score tracking
 
 @onready var ability_switch_sound_effect = [
 	preload("res://assets/sounds/mask_switch_africa.wav"),
@@ -240,6 +241,8 @@ func spawn_enemy():
 func _on_enemy_destroyed(enemy):
 	print_debug("on enemy destroyed", enemy)
 	max_enemy_size += 5
+	# Increase score by 5 when enemy is destroyed
+	current_score += 5
 	if enemy in enemies:
 		enemies.erase(enemy)
  
@@ -340,6 +343,8 @@ func _on_bullet_hit_enemy(enemy):
 		if enemy_type in ability_config[current_ability]["wins_against"]:
 			enemy.shrink(ability_config[current_ability]["shrink"])
 			do_refill_gauge = true
+			# Increase score by 1 when bullet hits an enemy
+			current_score += 1
 
 #-------------------------------------------------------------------------------
 # Gauge System
