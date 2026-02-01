@@ -1,12 +1,12 @@
-[gd_scene load_steps=0 format=3 uid="uid://c70ak3n5p7sas"]
+[gd_scene format=3 uid="uid://c70ak3n5p7sas"]
 
 [ext_resource type="Script" uid="uid://bxv8k3m4n5p6q" path="res://scripts/droppable.gd" id="1_droppable"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_droppable"]
 size = Vector2(50, 50)
 
-[node name="Droppable" type="Area2D"]
+[node name="Droppable" type="Area2D" unique_id=2139561763]
 script = ExtResource("1_droppable")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1163665413]
 shape = SubResource("RectangleShape2D_droppable")

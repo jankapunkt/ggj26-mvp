@@ -11,6 +11,9 @@ const SIZE = 50.0
 # Movement configuration - match enemy movement speed
 var move_speed = 120.0
 
+# Texture for yellow droppable
+var bomb_texture: Texture2D = preload("res://assets/images/bomb.png")
+
 func _ready():
 	add_to_group("droppable")
 	# Set up collision detection
@@ -29,18 +32,21 @@ func _process(delta):
 		queue_free()
 
 func _draw():
-	var color: Color
+	var half_size = SIZE / 2
+	
 	match droppable_type:
 		DroppableType.YELLOW:
-			color = Color(1.0, 1.0, 0.0, 1.0)  # Yellow
+			# Draw bomb texture scaled to fit 50x50px
+			if bomb_texture:
+				# Draw as 50x50 square
+				draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), Color(1.0, 0.0, 0.0, 1.0))
+				draw_texture_rect(bomb_texture, Rect2(-half_size, -half_size, SIZE, SIZE), false)
 		DroppableType.ORANGE:
-			color = Color(1.0, 0.5, 0.0, 1.0)  # Orange
-	
-	# Draw as 50x50 square
-	var half_size = SIZE / 2
-	draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
-	# Add border
-	draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.lightened(0.3), false, 2.0)
+			var color = Color(1.0, 0.5, 0.0, 1.0)  # Orange
+			# Draw as 50x50 square
+			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
+			# Add border
+			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.lightened(0.3), false, 2.0)
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
