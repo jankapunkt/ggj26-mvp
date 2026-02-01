@@ -38,8 +38,6 @@ func _draw():
 		DroppableType.YELLOW:
 			# Draw bomb texture scaled to fit 50x50px
 			if bomb_texture:
-				var texture_size = bomb_texture.get_size()
-				var scale_factor = SIZE / texture_size.x  # Scale from 500x500 to 50x50
 				draw_texture_rect(bomb_texture, Rect2(-half_size, -half_size, SIZE, SIZE), false)
 		DroppableType.ORANGE:
 			var color = Color(1.0, 0.5, 0.0, 1.0)  # Orange
