@@ -53,6 +53,7 @@ var drag_force = Vector2.ZERO
 
 # Bullet scene reference
 var bullet_scene = preload("res://scenes/bullet.tscn")
+var bomb_scene = preload("res://scenes/bomb.tscn")
 
 func _ready():
 	queue_redraw()
@@ -166,8 +167,12 @@ func shoot_bullet():
 	$ShootSound.play()
 	
 func shoot_bomb():
-	# to be implemented
-	pass
+	var bomb = bomb_scene.instantiate()
+	bomb.position = position
+	get_parent().add_child(bomb)
+	change_to_shoot_sprite()
+	$ShootSound.stream = shoot_sounds_pistole.pick_random()
+	$ShootSound.play()
 
 # func _draw():
 	# Draw player as a circle with current ability color
