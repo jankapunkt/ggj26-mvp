@@ -3,7 +3,7 @@ extends Label
 # Configuration
 const DISPLAY_DURATION = 0.3  # 300ms as specified
 const FLOAT_SPEED = 100.0  # Pixels per second to float upward
-
+const OFFSET = 50
 var elapsed_time = 0.0
 
 func _ready():
@@ -17,6 +17,9 @@ func _ready():
 	size = Vector2(200, 60)
 	# Offset to center the label on the position
 	position -= size / 2
+	# Add random offset (up to 25px in x and y direction)
+	position.x += randf_range(-OFFSET, OFFSET)
+	position.y += randf_range(-OFFSET, OFFSET)
 
 func _process(delta):
 	elapsed_time += delta
