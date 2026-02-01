@@ -13,6 +13,7 @@ func _ready():
 	# Set up collision detection
 	connect("area_entered", Callable(self, "_on_area_entered"))
 	connect("body_entered", Callable(self, "_on_body_entered"))
+	queue_redraw()  # Make sure the droppable is visible
 
 func _draw():
 	var color: Color
