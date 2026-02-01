@@ -77,9 +77,9 @@ var ability_5_prev = 4	# old player ability
 
 # Gauge tracking for abilities 1-3 (Red, Green, Blue)
 var ability_gauges = {
-	1: 0,  # RedS
-	2: 0,  # Green
-	3: 0   # Blue
+	1: 100,  # RedS
+	2: 100,  # Green
+	3: 100   # Blue
 }
 
 const GAUGE_DECREASE = {
