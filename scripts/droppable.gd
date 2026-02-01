@@ -12,8 +12,9 @@ const SIZE = 50.0
 # Movement configuration - match enemy movement speed
 var move_speed = 120.0
 
-# Texture for yellow droppable
 var bomb_texture: Texture2D = preload("res://assets/images/bomb.png")
+var ammo_texture: Texture2D = preload("res://assets/images/bullet.png")
+var saw_texture: Texture2D = preload("res://assets/images/chainsaw.png")
 
 func _ready():
 	add_to_group("droppable")
@@ -43,17 +44,23 @@ func _draw():
 				# draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), Color(1.0, 0.0, 0.0, 1.0))
 				draw_texture_rect(bomb_texture, Rect2(-SIZE , -SIZE, 100, 100), false)
 		DroppableType.ORANGE:
-			var color = Color(1.0, 0.5, 0.0, 1.0)  # Orange
-			# Draw as 50x50 square
-			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
-			# Add border
-			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.lightened(0.3), false, 2.0)
+			if ammo_texture:
+				draw_texture_rect(ammo_texture, Rect2(-SIZE , -SIZE, 100, 100), false)
+			else:
+				var color = Color(1.0, 0.5, 0.0, 1.0)  # Orange
+				# Draw as 50x50 square
+				draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
+				# Add border
+				draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.lightened(0.3), false, 2.0)
 		DroppableType.WHITE:
-			var color = Color(1.0, 1.0, 1.0, 1.0)  # White
-			# Draw as 50x50 square
-			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
-			# Add border
-			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.darkened(0.3), false, 2.0)
+			if saw_texture:
+				draw_texture_rect(saw_texture, Rect2(-SIZE , -SIZE, 100, 100), false)
+			else:
+				var color = Color(1.0, 1.0, 1.0, 1.0)  # White
+				# Draw as 50x50 square
+				draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
+				# Add border
+				draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.darkened(0.3), false, 2.0)
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
