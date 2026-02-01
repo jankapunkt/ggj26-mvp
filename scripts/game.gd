@@ -462,6 +462,10 @@ func get_gauge_percentage(ability_id: int) -> float:
 #-------------------------------------------------------------------------------
 # Droppable System
 #-------------------------------------------------------------------------------
+@onready var droppable_sound_effects = [
+	preload("res://assets/sounds/droppables/explode.wav"),
+	preload("res://assets/sounds/droppables/ammo.wav"),
+]
 
 # Spawn a droppable at the given position
 func spawn_droppable(position: Vector2):
@@ -501,6 +505,8 @@ func _on_droppable_picked_up(droppable):
 	match droppable_type:
 		0:  # Yellow - shrink all current enemies by 5000
 			print_debug("Yellow droppable picked up - shrinking all enemies by 5000")
+			$DroppableSound.stream = droppable_sound_effects[0]
+			$DroppableSound.play()
 			# Iterate over a copy to avoid issues when enemies get destroyed during iteration
 			var enemies_copy = enemies.duplicate()
 			for enemy in enemies_copy:
@@ -508,6 +514,8 @@ func _on_droppable_picked_up(droppable):
 					enemy.shrink(5000)
 		1:  # Orange - refill all gauges to maximum
 			print_debug("Orange droppable picked up - refilling all gauges")
+			$DroppableSound.stream = droppable_sound_effects[1]
+			$DroppableSound.play()
 			for ability_id in ability_gauges.keys():
 				ability_gauges[ability_id] = MAX_GAUGE
 		2:  # White - activate ability 5 for 5 seconds

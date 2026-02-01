@@ -26,6 +26,7 @@
 [ext_resource type="Script" uid="uid://dfodtfgxbvsy3" path="res://scenes/animated_sprite_2d.gd" id="20_5q0nq"]
 [ext_resource type="Texture2D" uid="uid://bafabm83a8b38" path="res://assets/images/bob_dead.png" id="21_2wyq8"]
 [ext_resource type="AudioStream" uid="uid://ccbw610l31n4i" path="res://assets/sounds/monster_eat_sound.wav" id="25_og1vs"]
+[ext_resource type="AudioStream" uid="uid://c5ska1t0c3fkw" path="res://assets/sounds/droppables/explode.wav" id="27_vxglm"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_sugp2"]
 radius = 125.0
@@ -289,3 +290,7 @@ volume_db = -0.5
 
 [node name="EatEnemySound" type="AudioStreamPlayer" parent="." unique_id=1877773548]
 stream = ExtResource("25_og1vs")
+
+[node name="DroppableSound" type="AudioStreamPlayer" parent="." unique_id=584863099]
+stream = ExtResource("27_vxglm")
+volume_db = -4.96

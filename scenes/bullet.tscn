@@ -1,15 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://c8dx5yg8n5xk4"]
+[gd_scene format=3 uid="uid://c8dx5yg8n5xk4"]
 
 [ext_resource type="Script" uid="uid://bqwc7yg8n5xk3" path="res://scripts/bullet.gd" id="1_bullet"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_bullet"]
 
-[node name="Bullet" type="Area2D" groups=["bullet"]]
+[node name="Bullet" type="Area2D" unique_id=1513837371 groups=["bullet"]]
 script = ExtResource("1_bullet")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=61494425]
 shape = SubResource("CircleShape2D_bullet")
 
-[node name="BulletSprite" type="Sprite2D" parent="."]
+[node name="BulletSprite" type="Sprite2D" parent="." unique_id=1565235469]
 rotation = 3.1415927
 scale = Vector2(0.2, 0.2)
