@@ -27,6 +27,14 @@ const HIT_SOUND_GRACE_TIME := 0.15
 @onready var collision_shape: CollisionShape2D = $CollisionShape2D
 @onready var hit_sound: AudioStreamPlayer = $HitSound
 @onready var death_sound: AudioStreamPlayer = $DeathSound
+@onready var sprite: Sprite2D = $Sprite2D
+
+# Preload enemy textures
+const ENEMY_TEXTURES = {
+	1: preload("res://assets/images/demon.png"),
+	2: preload("res://assets/images/wrestler-red.png"),
+	3: preload("res://assets/images/wrestler-yellow.png")
+}
 
 # -------------------------------------------------------
 
@@ -37,12 +45,26 @@ func _ready():
 	# ✅ ensure signal is connected
 	if not hit_sound.finished.is_connected(_on_HitSound_finished):
 		hit_sound.finished.connect(_on_HitSound_finished)
+	
+	# Set texture and scale after sprite is initialized
+	set_enemy_texture()
+	update_sprite_scale()
+
+func set_enemy_texture():
+	# Set texture based on enemy_type
+	if enemy_type in ENEMY_TEXTURES:
+		sprite.texture = ENEMY_TEXTURES[enemy_type]
+	else:
+		# Fallback to demon texture for invalid types
+		sprite.texture = ENEMY_TEXTURES[1]
+		push_warning("Invalid enemy_type %d, using default texture" % enemy_type)
 
 func init(max_size):
 	if max_size > MAX_ENEMY_SIZE:
 		max_size = MAX_ENEMY_SIZE
 	current_size = randi_range(MIN_ENEMY_SIZE, max_size)
 	move_speed = remap(current_size, MIN_ENEMY_SIZE, MAX_ENEMY_SIZE, 220, 80)
+	# Note: Texture and scale are set in _ready() after sprite node is initialized
 
 func _process(delta):
 	hit_sound_timeout -= delta
@@ -56,29 +78,30 @@ func _process(delta):
 		var dir = sign(player.position.x - position.x)
 		position.x += dir * move_speed * 0.5 * delta
 
-	queue_redraw()
-
 # -------------------------------------------------------
-# Drawing
+# Sprite scaling
 # -------------------------------------------------------
 
-func _draw():
-	draw_circle_enemy(get_enemy_color())
-
-func draw_circle_enemy(color: Color):
-	var radius = current_size / 2
-	draw_circle(Vector2.ZERO, radius, color)
-	draw_arc(Vector2.ZERO, radius, 0, TAU, 32, color.lightened(0.2), 2.0)
-
-func get_enemy_color() -> Color:
-	if get_parent().has_method("get_enemy_color"):
-		return get_parent().get_enemy_color(enemy_type)
-
-	match enemy_type:
-		1: return Color(1, 0, 0, 0.7)
-		2: return Color(0, 1, 0, 0.7)
-		3: return Color(0, 0, 1, 0.7)
-		_: return Color.WHITE
+func update_sprite_scale():
+	if not sprite:
+		push_warning("Sprite node not found")
+		return
+		
+	if not sprite.texture:
+		push_warning("Sprite texture not set, cannot scale")
+		return
+		
+	# Scale sprite to match current_size
+	var texture_size = sprite.texture.get_size()
+	var max_dimension = max(texture_size.x, texture_size.y)
+	
+	# Guard against invalid texture dimensions
+	if max_dimension <= 0:
+		push_warning("Invalid texture dimensions: %v" % texture_size)
+		return
+		
+	var scale_factor = current_size / max_dimension
+	sprite.scale = Vector2(scale_factor, scale_factor)
 
 # -------------------------------------------------------
 # Damage / shrink
@@ -93,6 +116,9 @@ func shrink(rate):
 
 	if collision_shape and collision_shape.shape:
 		collision_shape.shape.radius = current_size / 2
+	
+	# Update sprite scale when size changes
+	update_sprite_scale()
 
 	if current_size <= KILL_SIZE:
 		stop_hit_sounds()
