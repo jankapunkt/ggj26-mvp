@@ -8,6 +8,11 @@ const VIEWPORT_WIDTH = 1350
 const PULSE_SPEED = 0.005  # Animation speed for pulsing effect
 const PULSE_INTENSITY = 0.2  # Scale factor for pulse animation
 
+# Ability 5 indicator configuration
+const ABILITY_5_INDICATOR_Y = 100.0  # Position near top of screen
+const ABILITY_5_FONT_SIZE = 32
+const ABILITY_5_BG_PADDING = 20.0
+
 # Score display configuration
 const SCORE_X_OFFSET = 600  # Distance from right edge
 const SCORE_Y_OFFSET = 5   # Distance below ability circles
@@ -104,6 +109,32 @@ func _draw():
 	
 	# Draw score text
 	draw_string(ThemeDB.fallback_font, score_pos, score_text, HORIZONTAL_ALIGNMENT_RIGHT, -1, SCORE_FONT_SIZE, Color(1.0, 1.0, 1.0, 1.0))
+	
+	# Draw ability 5 indicator when active
+	if "ability_5_active" in parent_game_controller and parent_game_controller.ability_5_active:
+		var ability_5_timer = parent_game_controller.ability_5_timer if "ability_5_timer" in parent_game_controller else 0.0
+		var timer_text = "COLLISION DAMAGE: %.1fs" % ability_5_timer
+		var indicator_pos = Vector2(VIEWPORT_WIDTH / 2, ABILITY_5_INDICATOR_Y)
+		
+		# Calculate text size for background
+		var text_width = len(timer_text) * ABILITY_5_FONT_SIZE * 0.6  # Approximate width
+		var bg_rect = Rect2(
+			indicator_pos.x - text_width / 2 - ABILITY_5_BG_PADDING,
+			indicator_pos.y - ABILITY_5_FONT_SIZE - ABILITY_5_BG_PADDING / 2,
+			text_width + ABILITY_5_BG_PADDING * 2,
+			ABILITY_5_FONT_SIZE + ABILITY_5_BG_PADDING
+		)
+		
+		# Pulse effect for the indicator
+		var pulse = sin(Time.get_ticks_msec() * 0.005) * 0.2 + 0.8
+		var indicator_color = Color(1.0, 1.0, 1.0, pulse)
+		
+		# Draw background with pulsing glow
+		draw_rect(bg_rect, Color(1.0, 0.0, 0.0, 0.3 * pulse))
+		draw_rect(bg_rect, Color(1.0, 1.0, 1.0, 0.8 * pulse), false, 3.0)
+		
+		# Draw text
+		draw_string(ThemeDB.fallback_font, indicator_pos, timer_text, HORIZONTAL_ALIGNMENT_CENTER, -1, ABILITY_5_FONT_SIZE, indicator_color)
 
 func _process(_delta):
 	if parent_game_controller == null:
@@ -114,6 +145,11 @@ func _process(_delta):
 	var current_enemy = parent_game_controller.current_enemy
 	var gauges_changed = false
 	var score_changed = false
+	var ability_5_active = false
+	
+	# Check if ability 5 is active (forces redraw for animation)
+	if "ability_5_active" in parent_game_controller:
+		ability_5_active = parent_game_controller.ability_5_active
 	
 	# Check if score has changed
 	if "current_score" in parent_game_controller:
@@ -130,7 +166,7 @@ func _process(_delta):
 				last_gauge_values[i] = current_gauge
 				gauges_changed = true
 	
-	if current_ability != last_ability or current_enemy != last_enemy or gauges_changed or score_changed:
+	if current_ability != last_ability or current_enemy != last_enemy or gauges_changed or score_changed or ability_5_active:
 		last_ability = current_ability
 		last_enemy = current_enemy
 		queue_redraw()
