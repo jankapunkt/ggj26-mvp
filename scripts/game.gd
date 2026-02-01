@@ -117,8 +117,9 @@ func _process(delta):
 
 
 	# Handle ability switching
-	for i in range(1, 4):
+	for i in range(1, 5):
 		if Input.is_action_just_pressed("ability_%d" % i):
+			print_debug('ability pressed', i)
 			current_ability = i
 			playAbilitySwitchSound()
 			update_ability_display()
