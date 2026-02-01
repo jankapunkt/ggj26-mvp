@@ -342,10 +342,13 @@ func _on_bullet_hit_enemy(enemy):
 	if enemy and is_instance_valid(enemy):
 		var enemy_type = enemy.enemy_type
 		if enemy_type in ability_config[current_ability]["wins_against"]:
-			enemy.shrink(ability_config[current_ability]["shrink"])
+			var damage_amount = ability_config[current_ability]["shrink"]
+			enemy.shrink(damage_amount)
 			do_refill_gauge = true
 			# Increase score by 1 when bullet hits an enemy
 			current_score += 1
+			# Show damage text
+			show_damage_text(enemy.position, damage_amount)
 
 #-------------------------------------------------------------------------------
 # Gauge System
@@ -379,6 +382,13 @@ func get_gauge_percentage(ability_id: int) -> float:
 	if ability_id in ability_gauges:
 		return ability_gauges[ability_id] / MAX_GAUGE
 	return 1.0  # White ability always returns full
+
+func show_damage_text(pos: Vector2, damage: float):
+	"""Display damage text at the given position"""
+	var damage_text = preload("res://scenes/damage_text.tscn").instantiate()
+	damage_text.position = pos
+	damage_text.set_damage(damage)
+	add_child(damage_text)
 
 'func _draw():
 	# Draw scrolling background pattern

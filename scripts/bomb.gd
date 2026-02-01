@@ -33,6 +33,9 @@ func _on_area_entered(area):
 		# Shrink the enemy
 		if area.has_method("shrink"):
 			area.shrink(ENEMY_SHRINK_AMOUNT)
+			# Show damage text
+			if get_parent().has_method("show_damage_text"):
+				get_parent().show_damage_text(area.position, ENEMY_SHRINK_AMOUNT)
 
 func _draw():
 	# Draw expanding circle with semi-transparent blue color
