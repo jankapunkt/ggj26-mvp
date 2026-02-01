@@ -1,6 +1,7 @@
-# ggj26-mvp - GGJ26 Game Project
+# Masquerade
+Our GGJ26 Game Project.
 
-Game prototypes for GGJ26. The main project is a vertical chase game. A Tetris prototype is also included in the `tetris/` folder.
+
 
 ## Project Setup
 
