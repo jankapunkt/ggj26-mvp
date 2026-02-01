@@ -66,6 +66,12 @@ const MAX_GAUGE = 100.0
 const GAUGE_REFILL_RATE = 300.0  # Units per second when White ability is active
 var do_refill_gauge = false
 
+# Ability 5 configuration (collision damage)
+const ABILITY_5_DURATION = 5.0  # Duration in seconds
+const ABILITY_5_DAMAGE = 5000  # Damage dealt on collision
+var ability_5_active = false  # Whether ability 5 is currently active
+var ability_5_timer = 0.0  # Time remaining for ability 5
+
 # Gauge tracking for abilities 1-3 (Red, Green, Blue)
 var ability_gauges = {
 	1: 0,  # RedS
@@ -174,6 +180,14 @@ func _process(delta):
 		refill_gauges(current_ability, delta)
 	do_refill_gauge = false
 	
+	# Handle ability 5 timer countdown
+	if ability_5_active:
+		ability_5_timer -= delta
+		if ability_5_timer <= 0:
+			ability_5_active = false
+			ability_5_timer = 0.0
+			print_debug("Ability 5 deactivated")
+	
 	# Handle enemy spawning
 	time_since_last_spawn += delta
 	if time_since_last_spawn >= spawn_interval:
@@ -280,6 +294,16 @@ func check_player_collision_with(enemy):
 	# Player radius (125) + enemy radius (current_size / 2) + small buffer
 	var collision_threshold = 125 + (enemy.current_size / 2) + 10
 	if distance <= collision_threshold:
+		# Check if ability 5 is active - if so, damage the enemy instead of applying drag
+		if ability_5_active:
+			enemy.shrink(ABILITY_5_DAMAGE)
+			# Still apply some drag force but reduced
+			var direction_vector = chaser.position - player.position
+			if direction_vector.length() > MIN_DRAG_DISTANCE:
+				var drag_direction = direction_vector.normalized()
+				player.drag_force = drag_direction * (drag_strength * 0.3)  # Reduced drag when ability 5 is active
+			return
+		
 		# Player doesn't win - apply drag force towards chaser
 		# Calculate direction from player to chaser (upward, toward top of screen)
 		var direction_vector = chaser.position - player.position
@@ -423,8 +447,8 @@ func get_gauge_percentage(ability_id: int) -> float:
 func spawn_droppable(position: Vector2):
 	var droppable = preload("res://scenes/droppable.tscn").instantiate()
 	
-	# Randomly choose droppable type (0 = Yellow, 1 = Orange)
-	var type = randi() % 2
+	# Randomly choose droppable type (0 = Yellow, 1 = Orange, 2 = White)
+	var type = randi() % 3
 	droppable.droppable_type = type
 	
 	droppable.position = position
@@ -466,6 +490,10 @@ func _on_droppable_picked_up(droppable):
 			print_debug("Orange droppable picked up - refilling all gauges")
 			for ability_id in ability_gauges.keys():
 				ability_gauges[ability_id] = MAX_GAUGE
+		2:  # White - activate ability 5 for 5 seconds
+			print_debug("White droppable picked up - activating ability 5 for ", ABILITY_5_DURATION, " seconds")
+			ability_5_active = true
+			ability_5_timer = ABILITY_5_DURATION
 	
 	# Remove droppable from tracking
 	if droppable in droppables:

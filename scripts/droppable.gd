@@ -2,7 +2,8 @@ extends Area2D
 
 enum DroppableType {
 	YELLOW,  # Shrinks all current enemies by 5000
-	ORANGE   # Refills all gauges to maximum
+	ORANGE,  # Refills all gauges to maximum
+	WHITE    # Activates ability 5 for 5 seconds (collision damage)
 }
 
 @export var droppable_type: DroppableType = DroppableType.YELLOW
@@ -47,6 +48,12 @@ func _draw():
 			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
 			# Add border
 			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.lightened(0.3), false, 2.0)
+		DroppableType.WHITE:
+			var color = Color(1.0, 1.0, 1.0, 1.0)  # White
+			# Draw as 50x50 square
+			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color)
+			# Add border
+			draw_rect(Rect2(-half_size, -half_size, SIZE, SIZE), color.darkened(0.3), false, 2.0)
 
 func _on_body_entered(body):
 	if body.is_in_group("player"):
