@@ -101,7 +101,6 @@ func _ready():
 	mexican.visible = false
 	bob.visible = true
 	# Initialize droppable spawn interval
-	randomize()
 	next_droppable_at = randi_range(10, 25)
 
 func toggle_pause():
