@@ -347,6 +347,14 @@ func init_player():
 	update_player_color()
 	
 func playAbilitySwitchSound():
+	if ability_5_active:
+		jason.visible = true
+		japan.visible = false
+		african.visible = false
+		mexican.visible = false
+		bob.visible = true
+		return
+		
 	var ability_name = ability_config[current_ability]["name"]
 	if ability_name == "Red":
 		$AbilitySwitchSound.stream = ability_switch_sound_effect.get(0)
@@ -371,12 +379,6 @@ func playAbilitySwitchSound():
 		japan.visible = false
 		african.visible = false
 		mexican.visible = true
-		bob.visible = true
-	elif ability_name == "Jason":
-		jason.visible = true
-		japan.visible = false
-		african.visible = false
-		mexican.visible = false
 		bob.visible = true
 	else:
 		jason.visible = false

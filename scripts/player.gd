@@ -35,6 +35,8 @@ var time_since_last_shot := 0.0
 @onready var idle_texture_africa: Texture2D = preload("res://assets/images/african_mask_2.png")
 @onready var shoot_texture_africa: Texture2D = preload("res://assets/images/african_mask_evil.png")
 
+@onready var idle_texture_jason: Texture2D = preload("res://assets/images/jason_mask.png")
+
 
 # Drag force from enemies
 var drag_force = Vector2.ZERO
