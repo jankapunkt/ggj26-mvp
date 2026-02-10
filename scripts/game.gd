@@ -25,12 +25,13 @@ const MIN_DRAG_DISTANCE = 0.1  # Minimum distance threshold to prevent division 
 var drag_strength = 800.0 # Apply a strong drag force (x units/sec)
 
 # Game state
+const DEFAULT_ABILITY = 4  # White ability - unlimited ammo, used as fallback
 var game_over = false
 var scroll_offset = 0.0
 var enemies = [] # hold current enemies
 var current_enemy = null
 var time_since_last_spawn = 0.0
-var current_ability = 4 # Default ability 4 (white)
+var current_ability = DEFAULT_ABILITY # Default ability 4 (white)
 var max_enemy_size = 150.0
 var current_score = 0  # Score tracking
 
@@ -73,7 +74,7 @@ const ABILITY_5_DURATION = 5.0  # Duration in seconds
 const ABILITY_5_DAMAGE = 5000  # Damage dealt on collision
 var ability_5_active = false  # Whether ability 5 is currently active
 var ability_5_timer = 0.0  # Time remaining for ability 5
-var ability_5_prev = 4	# old player ability
+var ability_5_prev = DEFAULT_ABILITY	# old player ability
 
 # Gauge tracking for abilities 1-3 (Red, Green, Blue)
 var ability_gauges = {
@@ -148,13 +149,13 @@ func _process(delta):
 		if Input.is_action_just_pressed("ability_left"):
 			current_ability = current_ability - 1
 			if current_ability < 1:
-				current_ability = 4
+				current_ability = DEFAULT_ABILITY
 			playAbilitySwitchSound()
 			update_player_color()
 			
 		if Input.is_action_just_pressed("ability_right"):
 			current_ability = current_ability + 1
-			if current_ability > 4:
+			if current_ability > DEFAULT_ABILITY:
 				current_ability = 1
 			playAbilitySwitchSound()
 			update_player_color()
@@ -440,8 +441,8 @@ func refill_gauges(current, delta):
 
 func can_shoot() -> bool:
 	"""Check if the current ability has enough gauge to shoot"""
-	# White ability (4) has no gauge limitation
-	if current_ability == 4:
+	# White ability (DEFAULT_ABILITY) has no gauge limitation
+	if current_ability == DEFAULT_ABILITY:
 		return true
 	# Abilities 1-3 require sufficient gauge
 	if current_ability in ability_gauges:
@@ -452,6 +453,14 @@ func consume_gauge():
 	"""Decrease gauge for current ability after shooting"""
 	if current_ability in ability_gauges:
 		ability_gauges[current_ability] = max(0, ability_gauges[current_ability] - GAUGE_DECREASE[current_ability])
+		
+		# Check if gauge is now empty (cannot shoot anymore) - fallback to default ability
+		if ability_gauges[current_ability] < GAUGE_DECREASE[current_ability]:
+			print_debug("Gauge empty for ability ", current_ability, " - falling back to ability ", DEFAULT_ABILITY)
+			current_ability = DEFAULT_ABILITY
+			playAbilitySwitchSound()
+			update_player_color()
+			player.current_type = current_ability
 
 func get_gauge_percentage(ability_id: int) -> float:
 	"""Get the gauge level as a percentage (0.0 to 1.0)"""
